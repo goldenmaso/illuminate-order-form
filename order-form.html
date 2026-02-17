@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employee Skin Care Order Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:       #0A0A0A;
+      --dark:        #141414;
+      --dark-mid:    #1E1E1E;
+      --dark-card:   #1A1A1A;
+      --gold:        #B8942A;
+      --gold-light:  #D4AF5A;
+      --gold-pale:   #F5EDD6;
+      --gold-dim:    #2A2318;
+      --white:       #FFFFFF;
+      --off-white:   #F8F5EF;
+      --border:      #2E2E2E;
+      --border-gold: #6B5420;
+      --text-primary:#F0EBE0;
+      --text-secondary:#A89880;
+      --text-muted:  #5A5040;
+      --surface:     #111111;
+      --success:     #4A9B6F;
+      --success-bg:  #0D2018;
+      --error:       #C05050;
+      --error-bg:    #240E0E;
+      --shadow-sm:   0 1px 4px rgba(0,0,0,.4);
+      --shadow-md:   0 4px 20px rgba(0,0,0,.5);
+      --shadow-lg:   0 12px 48px rgba(0,0,0,.65);
+      --radius:      8px;
+      --radius-sm:   5px;
+      --transition:  180ms cubic-bezier(.4,0,.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--surface);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── TOP BANNER ── */
+    .top-banner {
+      background: var(--black);
+      border-bottom: 1px solid var(--border-gold);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,.6);
+    }
+    .banner-logo img {
+      height: 38px;
+      width: auto;
+      display: block;
+    }
+
+    /* ── PAGE LAYOUT ── */
+    .page-wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 56px 28px 100px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      margin-bottom: 48px;
+      text-align: center;
+      animation: fadeUp .5s ease both;
+    }
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      font-weight: 300;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin-bottom: 12px;
+      letter-spacing: .02em;
+    }
+    .page-header-rule {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 0 auto 16px;
+    }
+    .page-header p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      max-width: 720px;
+      margin: 0 auto;
+      font-weight: 300;
+      letter-spacing: .03em;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-bottom: 28px;
+      animation: fadeUp .5s ease both;
+    }
+    .card:nth-child(2) { animation-delay: .06s; }
+    .card:nth-child(3) { animation-delay: .12s; }
+    .card:nth-child(4) { animation-delay: .18s; }
+    .card:nth-child(5) { animation-delay: .24s; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(to right, var(--dark), var(--dark-card));
+    }
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--gold-dim);
+      border: 1px solid var(--border-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-icon svg { width: 16px; height: 16px; fill: none; stroke: var(--gold-light); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: .04em;
+    }
+    .card-subtitle { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; letter-spacing: .04em; font-weight: 300; }
+    .card-badge {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--gold-dim);
+      color: var(--gold);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      border: 1px solid var(--border-gold);
+    }
+
+    .card-body { padding: 28px; }
+
+    /* ── FORM GRID ── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 28px;
+    }
+    .field-full { grid-column: 1 / -1; }
+
+    /* ── FIELD ── */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .field-label .required { color: var(--gold); font-size: 13px; line-height: 1; }
+    .field-hint { font-size: 11px; color: var(--text-muted); letter-spacing: .03em; }
+
+    .field-input {
+      height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      color: var(--text-primary);
+      background: var(--dark-mid);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+      width: 100%;
+      letter-spacing: .02em;
+    }
+    .field-input::placeholder { color: var(--text-muted); font-weight: 300; }
+    .field-input:hover { border-color: var(--border-gold); }
+    .field-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(184,148,42,.12);
+      background: #1C1A14;
+    }
+    .field-input.error { border-color: var(--error); }
+
+    textarea.field-input {
+      height: auto;
+      padding: 10px 14px;
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.6;
+    }
+
+    select.field-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235A5040' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+    select.field-input option { background: var(--dark-mid); color: var(--text-primary); }
+
+    /* ── AUTO-FILLED ── */
+    .field-auto {
+      background: var(--dark);
+      color: var(--text-secondary);
+      cursor: default;
+      border-color: #252525;
+    }
+    .auto-tag {
+      margin-left: auto;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--gold);
+      background: var(--gold-dim);
+      padding: 2px 6px;
+      border-radius: 3px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border: 1px solid var(--border-gold);
+    }
+
+    /* ── INPUT WITH PREFIX ── */
+    .field-wrap { position: relative; }
+    .field-wrap .field-input { padding-left: 38px; }
+    .field-prefix {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+    }
+    .field-prefix svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ── ERROR MESSAGE ── */
+    .error-msg {
+      display: none;
+      font-size: 11px;
+      color: var(--error);
+      align-items: center;
+      gap: 4px;
+      letter-spacing: .02em;
+    }
+    .error-msg svg { width: 11px; height: 11px; flex-shrink: 0; }
+    .field.has-error .error-msg { display: flex; }
+    .field.has-error .field-input { border-color: var(--error); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+      margin: 28px 0;
+    }
+    .divider-gold {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border-gold), transparent);
+      margin: 28px 0;
+    }
+
+    /* ── VENDOR SECTION ── */
+    .vendor-section {
+      margin-bottom: 0;
+    }
+    .vendor-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .vendor-notice {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-style: italic;
+      font-weight: 300;
+      letter-spacing: .02em;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      padding: 10px 14px;
+      background: rgba(184,148,42,.06);
+      border-left: 3px solid var(--border-gold);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .vendor-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--gold-light);
+      letter-spacing: .06em;
+    }
+    .vendor-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--border-gold), transparent);
+    }
+
+    /* ── PRODUCT TABLE ── */
+    .product-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .product-table thead tr {
+      border-bottom: 1px solid var(--border-gold);
+    }
+    .product-table thead th {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0 0 10px;
+      text-align: left;
+    }
+    .product-table thead th:last-child { text-align: center; width: 100px; }
+    .product-table thead th:nth-child(2) { text-align: right; width: 110px; }
+
+    .product-table tbody tr {
+      border-bottom: 1px solid #222;
+      transition: background var(--transition);
+    }
+    .product-table tbody tr:last-child { border-bottom: none; }
+    .product-table tbody tr:hover { background: rgba(184,148,42,.04); }
+
+    .product-table td {
+      padding: 12px 0;
+      vertical-align: middle;
+      color: var(--text-primary);
+      font-weight: 300;
+    }
+    .product-table td:nth-child(2) {
+      text-align: right;
+      color: var(--gold-light);
+      font-size: 13px;
+      font-weight: 500;
+      padding-right: 16px;
+      white-space: nowrap;
+    }
+    .product-table td:last-child {
+      text-align: center;
+    }
+    .product-name { letter-spacing: .02em; }
+    .prod-size { font-size: 11px; color: var(--text-muted); font-weight: 300; margin-left: 3px; }
+
+    /* ── QTY INPUT ── */
+.qty-input {
+      width: 42px;
+      height: 28px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-left: none;
+      border-right: none;
+      background: var(--dark);
+      color: var(--text-primary);
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      outline: none;
+    }
+    .qty-input:focus { border-color: var(--gold); background: #1C1A14; }
+
+    /* ── ORDER SUMMARY ── */
+    .order-summary {
+      background: var(--dark);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 4px;
+    }
+    .summary-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .summary-lines { display: flex; flex-direction: column; gap: 6px; }
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 300;
+    }
+    .summary-line.summary-total {
+      border-top: 1px solid var(--border-gold);
+      padding-top: 10px;
+      margin-top: 6px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gold-light);
+    }
+    .summary-zero { color: var(--text-muted); font-style: italic; font-size: 12px; }
+
+    /* ── CONFIRMATION ── */
+
+    /* ── FORM ACTIONS ── */
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 8px;
+      animation: fadeUp .5s .25s ease both;
+    }
+    .actions-left { display: flex; gap: 10px; }
+    .actions-right { display: flex; gap: 10px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 42px;
+      padding: 0 24px;
+      border-radius: var(--radius-sm);
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all var(--transition);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      outline: none;
+      white-space: nowrap;
+    }
+    .btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--border-gold); color: var(--text-secondary); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      color: var(--black);
+      box-shadow: 0 2px 12px rgba(184,148,42,.3);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 4px 20px rgba(184,148,42,.45);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* ── SUCCESS MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.8);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn .2s ease;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--dark-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 52px 44px;
+      max-width: 460px;
+      width: 92%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      animation: scaleIn .3s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .modal-icon {
+      width: 68px;
+      height: 68px;
+      background: var(--gold-dim);
+      border: 1px solid var(--border-gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .modal-icon svg { width: 30px; height: 30px; stroke: var(--gold-light); fill: none; stroke-width: 2; }
+    .modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--text-primary); margin-bottom: 10px; letter-spacing: .04em; }
+    .modal p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; font-weight: 300; }
+    .modal-rule { width: 40px; height: 1px; background: var(--border-gold); margin: 16px auto; }
+    .modal-actions { margin-top: 28px; display: flex; gap: 10px; justify-content: center; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(.88); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .top-banner { padding: 0 18px; }
+      .page-wrap { padding: 32px 18px 72px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field-full { grid-column: 1; }
+      .card-body { padding: 20px; }
+      .card-header { padding: 16px 20px; }
+      .form-actions { flex-direction: column; }
+      .actions-right, .actions-left { width: 100%; }
+      .btn { justify-content: center; }
+      .product-table { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BANNER -->
+<header class="top-banner">
+  <div class="banner-logo">
+    <img src="data:image/jpeg;base64,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" alt="Illuminate" />
+  </div>
+</header>
+
+<!-- PAGE -->
+<main class="page-wrap">
+
+  <!-- Header -->
+  <div class="page-header">
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCADXAzkDASIAAhEBAxEB/8QAHAABAAIDAQEBAAAAAAAAAAAAAAcIBAUGAwEC/8QAURAAAQMDAQQECAgICwkBAQAAAAECAwQFEQYHEiExE0FRYQgUInF0gZGxFTI2N3WhssEXMzU4UnJz0RYjJEJihZKUorPCNENTVFWCk9LhVvD/xAAZAQEBAQEBAQAAAAAAAAAAAAAABAMCAQX/xAArEQEAAgICAAYBBAIDAQAAAAAAAQIDEQQSEyExMkFxM0JRYYEUkSJDRNH/2gAMAwEAAhEDEQA/AKZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJV2Caaseo6W/xXeiZUuY2FjHLlHRo7fyrV6l8lOPccXr7StbpK/SW+pRXwOy6mnxwlZ2+dOSp/8ACQvBikxcL5Fn40ULvYr0+8lHX+laLVthkt9Tuxzt8qmnxlYn9vmXkqHz78icWeYn0WVwxkxRMeqpYMy9Wyss90qLbcIVhqad+49q+9O1FTiimPTQyVNTFTwtV0sr0YxqdaquEQv3Gto9fD7JT1EUEU8kErIps9E9zFRr8LhcL14U8iw22HS9PDsogp6WPLrMkbo1ROKt4Nf7c7y+YryZYcsZa7hplxzjnQdVs20bV6xvK07HOgoocOqqhEzuIucIna5cfeajS9jr9RXqntVuj35pV4uX4rG9bl7kQtVo/T1DpixQ2qgblrOMkiph0r15uX/+4JhDPlcjwo1HrLTBh7zufRV/X9mptP6vuFnpJZJYKZ7UY6TG8uWo7jjz4NEb7aJUrWa7vc6441srUx2NcrU+pENCUU31jbG+u06AAdOQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEzbG9P6S1boupt9wt0a3CmmXpJ2Luy7ruLHI5OrgqYXKcO853aLstuemYJLjQSrcLYzi9+7iSFP6Sdad6etEMI5FO80nylrOG3XtHoz/AAa5lZrKuh3sJJQOXdzzVHs/epYJVREyq4QpvZLrX2W5xXK2VLqeqiVdx7UReaYVFReCpg2eotZ6m1Am5dLtPLFjHRMVI4/W1uEX1mGfiWy5O0T5NcXIilNadx4RtZY6y7W11vqYKivjY9lUsLkdhuUViOVOGc73D/4RzpeugtmpLbcapj5IKWqjmkaxEVyta5FVEz18DWgqx44pTowvftbsnTUm17TF205c7YyiujJKqkkijV8bN1HK1UTOHZ546iCwDzFhrijVXuTJa/nKw/g62ugp9HPukKsfW1czmzOzlWI1cNZ3fpf93mJNcu61VXqTJT2w3272Kq8ZtFwnpJM5Xcd5Lv1m8l9aHf1W2e91Om57dLb6dtbLGsfjjHqiIi8FXcx8bHXnHcRZ+JktftHntTi5FK11KNbhM6pr6ioc5XOllc9VXryqqeATiuEO90bsr1JqBGVFRGlroncUlqG+W5P6LOa+vCF9r1pG7TpJWtrTqHBA3Wt7JFp3U9ZZoq1K1tMrUWVGbuVVqKqYyvFM459RpTqJi0bh5ManUgAPXgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATHsn09s91XYWUdVRPbe4EXxjNS9rnplcPam9hUxhF4cPYq55ckY69ph3Sk3nUIcBP9dsP0/In8jutxp3f09yRPchzl22G3aFjnWy80lWqcmSxrEq+xXIZV5eKflpPHyR8OK2Z6odpPVMNwej3Uj0WKqY3m5i9ad6LhfVjrJA2vbUIKqjksWmp2ywzx7tVVInBWuTixue1F4r6iIbnQ1dtuE9BXQugqYHqySN3NqoYx3bBS94vLiMtq1msAANmYAAAAAAADotnV6t1g1XS3K6UDaynYqoqKmVjVeT2pyVU7/fgsZrLWFusmjH3+CeOdJo08SRF4Svcnk+rrXuRSqJ7S1VTLTQ00tRK+CHe6KNz1VseVyu6nJMrzwTZuNXLaLS2x5ppWYh+aqeapqZamokdJNK9XyPcuVc5VyqqeZtrJpq/3pu/arRV1cecdIyNdzPZvcjdxbMNdS/FsEifrTxN97jaclK+UzDOKWn0hxwO+i2Q63f8ahpo/wBaqZ9yqchqC0V1iu89quUbY6qBU32tejk4oipxTuVBXJS06rOy1LV85hgAA7cgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZFtrau3V0VdQ1ElPUwu3o5GLhWqY4HqLJbK9pFLqiJtuuSx014anxU4MnTtb39qetO7vqyohpKSaqqJEjhhYskj15NaiZVSmMUkkUrZYnuZIxUVrmrhUXtRTr7ttJ1XdNOvsdbWRyQSIjZJUjRJZG55Kv8A84nzsvB3bdPRZTlarq3q0OqbvLftRV13mTddVSq9G/ot5NT1IiIawA+hEREahJM7nYAD14AAAAAAAAAAC0Wxa5U1x2d21KdrWOpWrTzManJ7V5+tFR3rOzK47Fdc0Gk5q+ku/TJR1W69jo27249uU5d6KnsQztpG1uqu8T7bpxJqKjdwkqHeTLInYmPip9a9x8nJxb2yzEej6FORWMcTPq67ahtUprKktq0++OquPFsk6eVHTr7nO7uSdfYQFXVVTXVctXVzPnnlcrpJHrlXL2qeIPoYcNcUahHky2yT5gANmYAAAJu1BpHTlPsWbeobTAy4LQQSdOiu3t5ysyvPHHKkImWLLGSJmPh3ek01sABq4AZFuY2S4U0b03mula1ydqKqEw7d9KadsWlqSqtFqhpJn1rY3PYq5Vu49ccV7UQyvlitorPy7rjm1Zt+yFgAauAAAACcU0jpv8Cvw18EwfCHwZ03T5dvb+OfPBlkyxj1v5d0xzfevhBwANXAAAABOOiNIabrtjrbxV2mCWv8Uqn9Oqu3t5r5EavPHDCewyy5YxxEy7x45vOoQcADVwAnF2kNNpsWS9fBMHwh8FpN0+Xb2/jnzwQcZYssZN6+Hd8c01v5AAauAGTao2S3SkikajmPnY1yL1orkyWL1bsr01X2Kogs9uhoK9E3oJWOdjeTk1cqvBeRjlz1xTEW+WuPFa8TMK1g966lqKGtmo6uJ0U8L1ZIx3NrkXCoeBsyAdbsu0fNq7ULYXtc2306o+rkT9HqYi9q/vXqJI20aO0zZdDy11rtEFLUtnjakjFdnCrxTiphfkVreKfMta4rWrNkFAA3ZABt9F0sFbq600lVEksE1ZEyRi8nNVyIqHkzqNvYjc6agEr7ftN2OwRWdbPboqNZnS9JuKvlY3Mc171IoOMWSMle0Or0mlusgANHADtdi9pt161xFQ3SlZVUy08jljfnGUTgvA7PbVs7t9vsrL5p2hbTspvJqoY8qisXk/ivUvPuXuMLZ61yRSWtcVrU7QhcA+pzN2T4CcNq2kdN2rZslyt1pgp6vMH8a1XZ8rGeakHmWLLGWu4d5Mc0nUgANXAAAALG6C2babbpC3PvFniqa6aFJZnyK5FRXcUbz4YRUT1EG66sy2DV1ytSNVI4Z16LP/DXiz/CqGGPkVyWmsfDW+G1KxMtIADdkAHYbJI9NSamlbqpaVKHxV6t8YcrW9JvNxy68bxze3Wsy9rHadOPBYbxXYv+lZP/ADu/ebiu0bs4obb8JVlqt8FHhrume9yNw7kuc9eUJZ5lY9ayojjTPzCsILDeK7F/0rJ/53fvIN1YlA3U9zbauj8QSqkSn6Nct6PeXdx3YNsWbxJ1qYZ3x9I9dtWADZkA32z2jpbhra0UVbC2anmqWskjdycnYTze9MbL7IsSXagtlEsuVjSWRzd7HPHHvMMvIjHaK621x4ZvG9q0AsN4rsX/AErJ/wCd37yK9rsemI9SU7dJrSrQ+JtWTxdyub0m+/PPrxunmPP3trrMPb4usb3DjQTBoi1U9OyS021k0dxjtcVfU1UMUbp5HSbqpCzpEVrWo1zeKYyuTUa5ooaqa/26dI57lZWsqGVzIGxPmiVWNeyRrfJVzVei73cp7GeJtp5OKYjaNgAbsgAAAAAAAAAAAAAAAA9KeGapnZBTxSTSvXDGMarnOXsRE5nmZ9gu9dYrtBdLbKkVVAqqxytRycUVFRUXtRVQ8nevJ7Gt+bpLPsw1rcmo9todSxr/ADqp6R/4V8r6jB11ou66PfSMuk1JItUj1Z0D1djdxnOUT9JCR9O7cW+THqC0KnbNRr/ocv3nMbbtWWbVdVaprPPLI2CORsjZIlZuqqtxz58vqJaXzzkiLR5N7VxdN1nzR0ACtOAAAAAAAAAAAAAP3FHJLI2OKN0j3LhrWplV8yH2eGaCRY54nxPTm17VRU9SnV7Gmq/aZZUbz6V6+yNylkdSRafmolTULbc6mTrrNxGp5ldyJc3J8K8V1tviweJWZ2p+Ds9qkOiobpD/AAOme9qo7xlrVcsTV4Y3FdxXr7U5YOMKKW7RvTK1es6AAdOQAAWK1R+b4z6MpvewrqWK1R+b4z6MpvewrqScP22+1HI9Y+gAFadk2r8qUn7dn2kJ68JX5F0P0g3/AC3kC2r8qUn7dn2kJ68JX5F0P0g3/LeR5/zUUYvx2V8ABYnAAALGp+b1/U/3Fcixqfm9f1P9xHy/0/ajj/q+lcgAWJwAACx2zr5hW+g1n25SuJY7Z18wrfQaz7cpHzfbX7Ucb3T9K4gAsTrHP/N7T6GT7JXEsc/83tPoZPslcSPifq+1HI/T9AALE7Msn5ZofSI/tIWo1pqil0t8GzVzP5LV1Xi8kif7rLVVHebhx7iq9k/LND6RH9pCc/CX+Sdt9O/0OIeTSL5KVn+VWC01paYeO3XRLbpRLqq0Ro+piYi1TY0z00aJwemOaontTzEJWW21l4ulPbaCJZamoejGNT3r2IicVUmLYNrpJGR6Tu8uXImKGR3WnXGq+72dh3Fj0fpzR9yu2oo1bC2VqvVZMIymZzcje5V+5Diua2CJx285+HU4oyzF6/2xEWy7KtAtRUbLKnPHB9VOqe73Ihh7enrLsxdIqIivnhcqJ3kN7S9X1Gr9QuqsvjoYVVlJCv8ANb+kv9Jea+pOomLbp81aftYDjwppek29Zl14kWraI9IhXIAH1EIb3Z98urH6fD9tDRG92ffLqx+nw/bQ5v7ZdU90JQ8J78TYv1p/cwhIm3wnvxNi/Wn9zCEjDifhhryPySAApYJD8Hz5xofRpfchOk99oJtWTaRrI29JNQpPGjuUzVVzXsx2oiZ70VewgvwfPnGh9Gl9yG0283CqtW1C33GikWOop6OKSNydqPk+rqPnZsfiZ+v8LMV+mLf8uQ2m6Vl0nqeWhRHOpJf42kevXGq8l705L7es5hOZY3UFHRbUdmsVdQoxtfG1ZIkzxjmRPKiVexeX9lSukkb4pXRSMcx7HK1zXJhUVOaKU8fLN66t6x6sc1Os7j0lYnbZ80ifrU/vQrmWM22fNIn61P70K5mfC/HP265Pvj6AAWJw6LZvZP4Qa0t1uczfhWVJJ0xw6NvlOz58Y9ZzpN/g1WRrKa46hmamXr4rCq9TUw56+3d9imPIyeHjmWmGne8Q6jXutPgDW+nLO2RrYJ371Z3MdljPUi5X1Icd4S1kVtTbtQxN8l7fFZlTtTLmr7N5PUhHm0i9Ov8ArW5XFrldD0yxwc/xbPJbjszjPrJuq2JrzYqknGSrWk304ceni5+1WqnmcR9PA6X/ANqe3i9q/wClbgAfSRAAAFitqHzHM9GpPewrqWK2ofMcz0ak97CTk++n2owe230rqACtOAADpdlvziWP0thIPhPf7VYv1Jvewj7Zb84lj9LYT5tJ0DBrSSifLcpKNaRHom7Ej97ex3p2EOe8Uz1tb00qxVm2KYhV4E5fgJo//wBHP/dU/wDYjjafpOLR1/gtkVa+sbLStn33RoxUVXvbjGV/R+sopyMeSdVllfDekbmGfbNS0FdZPE6+4zWmvSibQSVLabpo6inauWNcieU1ycE3kzlEQ8tW6mo57dLR0VTJcq2riihrbjJTpDvxxrlrGt4qvFG5cvFd1OBxQPYxV3tz4k60AA1cAAAAAAAAAAAAAAAAAB6U0E1TOynp4pJppF3WMY1XOcvYiIB5gnnZhsmgoEjuuqYo6iq4Oio18pkfe/qcvdyTv6uy2laXpdQaRraWKihdWRxK+kcjERzXt4oiL1Zxj1kdubSL9Y/2pjjWmu5VUB9VFRcKmFQ+FiYAAAAAAAAAAAAAfuCaWCZs0Er4pGrlr2OVFRe5UPtRPPUSLJUTSSvVcq57lcq+tSVNkmzKg1JYX3i9yVccUsispmQvRu8jeCuXKL15T1KaTads4rtKSOrqNZKy0OXCSqnlxKvU/H1Ly8xjGfHN+m/NrOK8V7fDggAbMgAAAABYrVH5vjPoym97CupYrVH5vjPoym97CupJw/bb7Ucj1j6AAVp2TavypSft2faQnrwlfkXQ/SDf8t5Atq/KlJ+3Z9pCevCU+RdD9IN/y3kef81FGL8dlfAAWJwAACxqfm9f1P8AcVyLGp+b3/U/3EfL/T9qOP8Aq+lcgAWJwAACx2zr5hW+g1n25SuJYnYTV0142aS2V7vKpnS08rc8dyRVci/4nJ6iPm+yJ/aVHG90x/CuwNpqix1+nbzPbLhC5kkTlRrlTyZG9Tmr1op4WO1V96ucNtttO6eomdhrUTl2qvYidalfaNb+GGp3pYF/5vafQyfZK4ljtqL4dL7HvgdsydIsEVFGqJjfVMby48yOUriScPzraf3lvyfKYj+AAFidmWT8s0PpEf2kJz8Jf5J2307/AEOIMsn5ZofSI/tITn4S/wAk7b6d/ocSZ/zUUYvxWQHFJJDKyWJ7o5GORzXNXCtVOSop2+tdpF11Lpqhs8reh3G5rXtX/aHIvk8OpOSqnb5kOFBTalbTEzHoxi0xExHy+pzLGbdPmrT9rAVzTmWM26fNWn7WAl5P5Mf3/wDG2H2XVyABYnDe7Pvl1Y/T4ftoaI3uz75dWP0+H7aHN/bLqnuhKHhPfibF+tP7mEJE2+E9+JsX60/uYQkYcT8MNeR+SQAFLBIfg+fOND6NL7kMnwkPl7T/AEfH9uQxvB8+caH0aX3IZPhIfL2n+j4/tyEf/p/pT/0f2xNiOr/4O6iSgrJVS217kY/K8I5OTX/cvd5jc+EDpDxC5N1PQx4pqt6NqmonxJep3mdj2+ciUsNsov1JrjRVRpu9q2aqgi6KVHL5UkXJr/Oi8M9qIvWM8TivGWv9mKYvXw5/p7bbPmkT9an96FcyyO3iJIdl8sLVVUjlgair14VEK3Dg/jn7OV7/AOgAFiZ+mNc97WMarnOXCIiZVVLQ09VbdnGzmh+EmSKynYyORkLUVz5X8XYyqIvHeXnyQhHYrZPhrX1HvtzBRfyqX/tVN1P7St+s6vwlb0stzt9gif5EDPGJkT9N2UbnvREX+0RciPFyVx/3KnD/AMKTdv8A8Mmif+jXT+6w/wDudLoPX+n9V1s1utVNV00sMXSqyeJjEc3KIuN1y9ap7SrZ0mzK9/AGtrbXvk3IFlSKdVXCdG/yVVfNnPqPMnDp1nr6vacm3aNvTanZVsOublRtj3IJJFngTGE3H8URO5FynqOXJz8JWyJLb7fqCJqb0L/FplRObXZc1fMi5/tEGFHHyd8cSyzU6XmAAGzILFbUPmOZ6NSe9hXUsVtQ+Y5no1J72EnJ99PtRg9tvpXUAFacAAHS7LfnEsfpbCTPCOudxt9TZUoK+qpUeyXf6GZzN7CtxnC8SM9lvziWP0thIPhO/wC1WP8AUm97CPJG+RX6U0/DZF38I9Q/9dun97f+8wq6trK+ZJq6rnqpEbuo+aRXqic8ZXq4r7THBXFYj0hPuZAAevAAAAAAAAAAAAAAAAAAACx2zTT2j9J2+KtdeLXVXKWPL6t1SzDUXmkeV4J381+oriDHNinLGt6aY8kUnetrdTau0rCqpJqS0Iqc08cjVfZk11ftG0VRxLI+/wBLLjk2HMir/ZQqsCaOBT5lvPLt+zYakq6Wv1BcK6igWCmqKh8kUa82tVyqiGvOj0DpG46wuzqKiVsUUTd6eoemWxovLzquOCGBqexXDTt5mtdyhWOaNeDk+LI3qc1etFLItWJ6RPmmms67NWADtyAAAAAAAAHtRRNnrIIHyJE2SRrHPXk1FXGT8QQy1E7III3yyyORrGMTLnKvJETrUyLtba+018lDcqWWlqY/jRyJhU7F8x5v4e6+Vv7PQ0tstdNb6JiMp6eNI40TsRDIqIYqiB8E8bJYpGq17HplrkXmioVKtesNUWuBlPQ36vhhZwZH0qua3uRFyiG9pNrGuIHorrpHOifzZadiovsRFPl24OTe4ldHKprzhu9rOy+Sz9JedPRPlt3OanTLnwd6dat+tPNyiok+LbbqhInMmt9olymMrE9Pam/xIykdvyOfhE3lVcImEQuwRkiNZEuXpM7o/IAN2QAAJdve0LT9XsnbpmHxvx9KKGHjFhm81W5455cFIiAM8eOuOJiHd7zf1AAaOHtQyNhrYJn53WSNcuOxFyWGm2waHnbuTR1sjc5w+lRU+tSuYMcuCuXXb4aY8tsfosN+FXZ9/wAlP/cm/vI92x6s09qZltSxQSRLTrIsu9Aked7dxy58lI7BzTjUpbtDq2e1o1IAChiE66M2paTtmj7baa9tY6WnpmxStSnRzVVOfXxQgoGWXDXLGrNMeSaTuFhvwq7Pv+Sn/uTf3nO7R9oGjr3o6ttlqpZmVc250bnUrWImHtVeKL2IpDYMq8SlZiY27nkWmNAAKmAb/Q2qrlpK8pcKBUexybs8Dl8mVvYvYvYvV7UNADy1YtGpexMxO4WIh2k7PNR0LG36COJ7U4xVlL0qNVee65EX7j6u0TZtpylkWxxRPe5PxdFR9Gr+zKqiIV2BL/h0/edN/wDJt+0Ol2gaxuOsLqlVVokNPFlKemauWxp97l61OaAKa1isahhMzadyAA6eMi2zMp7jTTyZ3I5mPdjnhFRVJN2y69sOq7FR0Vq8a6WGp6V3Sxbqbu6qdveRUDO2OtrRafh3W8xWax8gANHAnMl7adtD09qHQ6We3rV+M78Tv4yLdbhvPjkiEGd8VbzEz8O63msTEfIADRwGz0nXQWzU9suNTvdBTVUcsm6mV3WuRVwhrAeTG409idTtJO2rWll1bHa22nxnNMsiydLHu/G3cY49ykbAHOPHGOvWHt7zedyAA7cut2T6gt+mdXx3S5dL4u2F7F6Nm87Kpw4Httg1JbdU6piuNr6boGUjIl6Vm6u8jnKvDPehxgM/Cr37/LvvPXr8BuNHX6r01qGlu9IqqsTsSMzhJGL8Zq+dPrwvUacHcxExqXMTMTuEybVdpGndS6Nltdu8cSpfLG9Eki3Uwi5XjkhsA4xYq4o1V1e83ncgANHCT9jOsNMaRt9c+6eNrXVUiJmKHeRI2pwTOeeVX6jh9ZXh1/1RcLuu8jamZXRo7m1icGovmaiGoBnXFWt5v8y7nJM1ivxAADRwmat2kaavOzVbDd/HfhB9EkTnJFvN6ZqeS/Of0kRSGQDPHirj31+Xd8k31sABo4CXdbbQtPXfZm3T9ItX46kMDPLiw3LFbnjnuUiIGd8dbzEz8O63msTEfIADRwAADc6IuVNZ9W2y51m/4vTVDZJNxMrhOxCcZ9ruhZ8dPDWS45b9Ii49qldQYZePTLO7NaZrUjULDfhV2ff8lP8A3Jv7yK9ruoLNqTUlPXWSJ8dMyjbE5HRJGu+j3qvBO5yHGg8x8amO3aHt81rxqQAFDEAAAAAAAAAAAAAAAAAAAAAAABaDZ/abboPRMKXSppqSaVOmq5pXo1FevJuV7EwmPP2kW7aNeWbVDYLfaqFJW0795K6Vu67vaxOe6vDOezl1keXC5XG4qxbhX1VWsaYYs8zn7qdiZXgYhLj43W/e07lvfPuvWsagBMewHR1ou1trb1d6KKtRJughjmbvMbhEVy45KvlJ5sG/1XsYslf0k9jqJLZOvFIneXCq+bmntXzHtuXjrfrJHHvavaFfQZNzo5rdcqmgqN3pqaV0Um6uU3mqqLj2Hykoa2rY59LR1E7WrhyxRK5EXvwhRuNbY6Y4MiqoqykRq1VJPAjvirJGrc+bJ9tlDVXO4QUFFC6apnejI2J1qo3GtmmMCaNL7EJFck2pLkjW/wDAo1yvre5PcnrNTtv0LadM01BcrLG+GCV6wyxOkV/lYyjkVePUufUYV5OO1+sS1nBeK9pZXg9P0nHXyPrZEZfc7tP06ojN1U/3f9Lnnrxy6zrdv2l23bTXw3TRItbbk3n4Ti+FfjJ6vje3tK7oqouU4KdtYtp+p7ZaprZNLDcqaSN0aeOI57mIqY4OyiqncuTPJgv4kZKS7plr06WhxAALEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALQbEKVKXZpa+GHTdJK71yOx9WD22na2pNH2jeTdmuU6KlNBn/E7san18vN5V1+oNA7O7c6tVJJoqSOKGBq4WWRGJnHYmeKr1ecrfqO9V+oLxPdblL0lRMvHHBrU6mtTqRD5WHB42Sb29Nr8mXw6RWPVhVM8tTUy1M8jpJZXq973c3OVcqqk2eDHVRrSXqhVUSRskUqJ2oqORfZhPaQedZsr1RFpPVbLhVNlfSSROhnbGiK7C8UVEVUzhUT6y7kUm+Oawlw363iZdz4TVxifVWe1MdmSNkk8idiOw1v2XEWaYu01i1BRXeBqPfSyo/dX+cnJU9aKqGZr+/rqbVlbeEY9kUrkbCx3NrGoiJnv4ZXvVTQnuHH1xxWTJftebQuNp670N9s9PdLdL0lPO3LV62r1oqdSovA4LwjoFl0HBKmP4mvjcvmVr096oRlsf1w/St58VrZHLaatyJM3n0TuqRPv7vMhLm3RrKnZfWzxObIxr4ZGuauUVFkamUX1nzvBnDnr+21fiRkxT+6s4APrvngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMul1uV0fE65V9RVrExGRrNIrtxqdSZ5GGAeRGvQmdgAPQAAA6dNcXpdDy6RlWKaicrdyR6KskbUcjt1FzjGU604HMA5tWLer2LTHoAA6eAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k=" alt="Illuminate" style="height:36px; width:auto; margin-bottom:16px; display:block; margin-left:auto; margin-right:auto;"/>
+    <h1>Employee Skincare Order Form</h1>
+    <div class="page-header-rule"></div>
+    <p>The vendors listed below have an approved staff ordering process with Illuminate. Please note that eligibility may vary — from time to time we may not qualify for a vendor's program based on their individual rules. To participate, you must also be in good standing with Illuminate, which requires that you have been employed for at least 6 months, are in an active work status with no current leave, and are not on a performance improvement plan.</p>
+  </div>
+
+  <form id="orderForm" novalidate>
+
+    <!-- ── SECTION B: REQUESTER DETAILS ── -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div>
+          <div class="card-title">Requester Details</div>
+          <div class="card-subtitle">Your information for order processing</div>
+        </div>
+        <div class="card-badge">Section B</div>
+      </div>
+      <div class="card-body">
+
+        <div class="form-grid">
+
+          <!-- Full Name -->
+          <div class="field">
+            <label class="field-label">
+              Full Name <span class="required">*</span>
+            </label>
+            <div class="field-wrap">
+              <span class="field-prefix">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <input type="text" id="requesterName" class="field-input" placeholder="Your full name" required/>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="field">
+            <label class="field-label">
+              Email Address <span class="required">*</span>
+            </label>
+            <div class="field-wrap">
+              <span class="field-prefix">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </span>
+              <input type="email" id="requesterEmail" class="field-input" placeholder="Your email address" required/>
+            </div>
+          </div>
+
+          <!-- Phone -->
+          <div class="field">
+            <label class="field-label" for="phone">Phone / Extension</label>
+            <div class="field-wrap">
+              <span class="field-prefix">
+                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 0111.6 19a19.5 19.5 0 01-6-6 19.79 19.79 0 01-2.93-8.24A2 2 0 014.61 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              </span>
+              <input type="tel" id="phone" class="field-input" placeholder="+1 (555) 000-0000"/>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="field field-full">
+            <label class="field-label" for="notes">Order Notes</label>
+            <textarea id="notes" class="field-input" placeholder="Any special requests or delivery instructions&#8230;" rows="3"></textarea>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+<!-- ── SECTION A: PRODUCT SELECTION ── -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </div>
+        <div>
+          <div class="card-title">Product Selection</div>
+          <div class="card-subtitle">Choose products and quantities from each vendor</div>
+        </div>
+        <div class="card-badge">Section A</div>
+      </div>
+      <div class="card-body">
+
+        <!-- ALASTIN -->
+        <div class="vendor-section">
+          <div class="vendor-label">
+            <span class="vendor-name">Alastin</span>
+            <div class="vendor-line"></div>
+          </div>
+          <p class="vendor-notice">IPS must meet a quarterly purchasing requirement with Alastin to maintain eligibility for staff orders. We cannot guarantee this order will be placed.</p>
+          <table class="product-table" id="table-alastin">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-vendor="Alastin" data-product="Regenerating Skin Nectar® with TriHex Technology" data-price="82.60">
+                <td class="product-name">Regenerating Skin Nectar®, with TriHex Technology <span class="prod-size">1 oz.</span></td>
+                <td>$82.60</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Alastin" data-product="Restorative Skin Complex® with TriHex+" data-price="83.65">
+                <td class="product-name">Restorative Skin Complex®, with TriHex+ <span class="prod-size">1 oz.</span></td>
+                <td>$83.65</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Alastin" data-product="C-Radical Defense Antioxidant Serum" data-price="69.65">
+                <td class="product-name">C-Radical Defense Antioxidant Serum <span class="prod-size">1 oz.</span></td>
+                <td>$69.65</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Alastin" data-product="A-Luminate Brightening Serum" data-price="63.70">
+                <td class="product-name">A-Luminate Brightening Serum <span class="prod-size">1.7 oz.</span></td>
+                <td>$63.70</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Alastin" data-product="Restorative Eye Treatment® with TriHex Technology" data-price="41.30">
+                <td class="product-name">Restorative Eye Treatment®, with TriHex Technology <span class="prod-size">.5 oz.</span></td>
+                <td>$41.30</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Alastin" data-product="Restorative Neck Complex® with TriHex Technology" data-price="51.10">
+                <td class="product-name">Restorative Neck Complex®, with TriHex Technology <span class="prod-size">1.7 oz.</span></td>
+                <td>$51.10</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Alastin" data-product="TransFORM Body Treatment with TriHex Technology" data-price="63.00">
+                <td class="product-name">TransFORM Body Treatment, with TriHex Technology <span class="prod-size">6 oz.</span></td>
+                <td>$63.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Alastin" data-product="ReFORM & RePAIR Complex" data-price="85.40">
+                <td class="product-name">ReFORM &amp; RePAIR Complex <span class="prod-size">5 oz.</span></td>
+                <td>$85.40</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Alastin" data-product="Inhance Post-Injection Serum with TriHex Technology" data-price="23.10">
+                <td class="product-name">Inhance Post-Injection Serum, with TriHex Technology <span class="prod-size">.33 oz.</span></td>
+                <td>$23.10</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="divider-gold"></div>
+
+        <!-- PLATED -->
+        <div class="vendor-section">
+          <div class="vendor-label">
+            <span class="vendor-name">Plated</span>
+            <div class="vendor-line"></div>
+          </div>
+          <p class="vendor-notice">Important: IPS must meet a quarterly purchasing requirement with Plated to maintain eligibility for staff orders. We cannot guarantee this order will be placed. &nbsp;|&nbsp; Min order: 5 units total (pooled across all staff) &nbsp;|&nbsp; Max order: 24 units total (pooled across all staff) &nbsp;|&nbsp; Eligible products: Only products currently offered at IPS locations</p>
+          <table class="product-table" id="table-plated">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-vendor="Plated" data-product="( plated )™ Skin Science DAILY – 30ml" data-price="103.20">
+                <td class="product-name">( plated )™ Skin Science DAILY <span class="prod-size">30ml</span></td>
+                <td>$103.20</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Plated" data-product="( plated )™ Skin Science DAILY REFILL – 30ml" data-price="97.60">
+                <td class="product-name">( plated )™ Skin Science DAILY REFILL <span class="prod-size">30ml</span></td>
+                <td>$97.60</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Plated" data-product="( plated )™ Skin Science INTENSE – 15ml" data-price="103.20">
+                <td class="product-name">( plated )™ Skin Science INTENSE <span class="prod-size">15ml</span></td>
+                <td>$103.20</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Plated" data-product="( plated )™ Skin Science INTENSE REFILL – 15ml" data-price="97.60">
+                <td class="product-name">( plated )™ Skin Science INTENSE REFILL <span class="prod-size">15ml</span></td>
+                <td>$97.60</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Plated" data-product="( plated )™ Skin Science CALM – 15ml" data-price="103.20">
+                <td class="product-name">( plated )™ Skin Science CALM <span class="prod-size">15ml</span></td>
+                <td>$103.20</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Plated" data-product="( plated )™ Skin Science HAIR Serum – 30ml" data-price="183.20">
+                <td class="product-name">( plated )™ Skin Science HAIR Serum <span class="prod-size">30ml</span></td>
+                <td>$183.20</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Plated" data-product="( plated )™ Skin Science EYE Serum – 8ml" data-price="55.20">
+                <td class="product-name">( plated )™ Skin Science EYE Serum <span class="prod-size">8ml</span></td>
+                <td>$55.20</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="divider-gold"></div>
+
+        <!-- EPICUTIS -->
+        <div class="vendor-section">
+          <div class="vendor-label">
+            <span class="vendor-name">Epicutis</span>
+            <div class="vendor-line"></div>
+          </div>
+          <p class="vendor-notice">Available to order quarterly with no restrictions or minimum orders.</p>
+          <table class="product-table" id="table-epicutis">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-vendor="Epicutis" data-product="Luxury Skincare Sets" data-price="100.00">
+                <td class="product-name">Luxury Skincare Sets</td>
+                <td>$100.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Cleansing Essential Sets" data-price="52.00">
+                <td class="product-name">Cleansing Essential Sets</td>
+                <td>$52.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Oil Cleanser" data-price="42.00">
+                <td class="product-name">Oil Cleanser</td>
+                <td>$42.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Serum" data-price="125.00">
+                <td class="product-name">Lipid Serum</td>
+                <td>$125.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Hyvia® Crème" data-price="85.00">
+                <td class="product-name">Hyvia® Crème</td>
+                <td>$85.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Arctigenin Brightening Treatment" data-price="85.00">
+                <td class="product-name">Arctigenin Brightening Treatment</td>
+                <td>$85.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Hydrobiome Mist" data-price="37.50">
+                <td class="product-name">Hydrobiome Mist</td>
+                <td>$37.50</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Shield SPF 30" data-price="45.00">
+                <td class="product-name">Lipid Shield SPF 30</td>
+                <td>$45.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Recovery Mask Face (Box of 5)" data-price="55.00">
+                <td class="product-name">Lipid Recovery Mask – Face <span class="prod-size">Box of 5</span></td>
+                <td>$55.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Recovery Mask Neck (Box of 5)" data-price="65.00">
+                <td class="product-name">Lipid Recovery Mask – Neck <span class="prod-size">Box of 5</span></td>
+                <td>$65.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Recovery Mask Eyes (Box of 5)" data-price="50.00">
+                <td class="product-name">Lipid Recovery Mask – Eyes <span class="prod-size">Box of 5</span></td>
+                <td>$50.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Body Treatment" data-price="105.00">
+                <td class="product-name">Lipid Body Treatment</td>
+                <td>$105.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Post-Procedure Set" data-price="26.00">
+                <td class="product-name">Post-Procedure Set</td>
+                <td>$26.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Oil Cleanser (16oz)" data-price="100.00">
+                <td class="product-name">Backbar Oil Cleanser <span class="prod-size">16 oz.</span></td>
+                <td>$100.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Enzyme Powder (1.1oz)" data-price="45.00">
+                <td class="product-name">Backbar Enzyme Powder <span class="prod-size">1.1 oz.</span></td>
+                <td>$45.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Lipid Serum" data-price="145.00">
+                <td class="product-name">Backbar Lipid Serum</td>
+                <td>$145.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Hyvia® Crème" data-price="120.00">
+                <td class="product-name">Backbar Hyvia® Crème</td>
+                <td>$120.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Arctigenin Brightening Treatment" data-price="120.00">
+                <td class="product-name">Backbar Arctigenin Brightening Treatment</td>
+                <td>$120.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Hydrobiome Mist (3 Bottles)" data-price="90.00">
+                <td class="product-name">Backbar Hydrobiome Mist <span class="prod-size">3 Bottles</span></td>
+                <td>$90.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Lipid Recovery Masks Face (10 Masks)" data-price="90.00">
+                <td class="product-name">Backbar Lipid Recovery Masks – Face <span class="prod-size">10 Masks</span></td>
+                <td>$90.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Lipid Recovery Masks Neck (10 Masks)" data-price="100.00">
+                <td class="product-name">Backbar Lipid Recovery Masks – Neck <span class="prod-size">10 Masks</span></td>
+                <td>$100.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Lipid Recovery Masks Eyes (10 Masks)" data-price="80.00">
+                <td class="product-name">Backbar Lipid Recovery Masks – Eyes <span class="prod-size">10 Masks</span></td>
+                <td>$80.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Lipid Body Treatment (16oz)" data-price="175.00">
+                <td class="product-name">Backbar Lipid Body Treatment <span class="prod-size">16 oz.</span></td>
+                <td>$175.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+              <tr data-vendor="Epicutis" data-product="Ice Globes" data-price="100.00">
+                <td class="product-name">Ice Globes</td>
+                <td>$100.00</td>
+                <td><input type="number" class="qty-input" value="0" min="0" max="99"/></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="divider"></div>
+
+<!-- ORDER SUMMARY -->
+        <div class="order-summary">
+          <div class="summary-title">Order Summary</div>
+          <div class="summary-lines" id="summaryLines">
+            <div class="summary-line summary-zero">No products selected yet</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+        <!-- ACTIONS -->
+    <div class="form-actions">
+      <div class="actions-left">
+        <button type="button" class="btn btn-ghost" onclick="clearForm()">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 100 .49-.5"/></svg>
+          Clear
+        </button>
+      </div>
+      <div class="actions-right">
+        <button type="submit" class="btn btn-primary">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Submit Order
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+</main>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="modal-icon">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2>Order Submitted</h2>
+    <div class="modal-rule"></div>
+    <p>Your skin care order has been received and is pending wellness team review. A confirmation will be sent to <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="abc6cad8c4c5ebc2c7c7dec6c2c5cadfced8ded9ccced9d285c8c4c6">[email&#160;protected]</a></strong>.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      <button class="btn btn-primary" onclick="newOrder()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Order
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── UPDATE SUMMARY ──
+function updateSummary() {
+  var rows = document.querySelectorAll("tr[data-product]");
+  var lines = [];
+  var total = 0;
+  
+  for (var i = 0; i < rows.length; i++) {
+    var input = rows[i].querySelector(".qty-input");
+    if (!input) continue;
+    var qty = parseInt(input.value) || 0;
+    if (qty > 0) {
+      var product = rows[i].getAttribute("data-product");
+      var price = parseFloat(rows[i].getAttribute("data-price"));
+      var subtotal = qty * price;
+      total += subtotal;
+      lines.push({ p: product, q: qty, s: subtotal });
+    }
+  }
+  
+  var container = document.getElementById("summaryLines");
+  if (!container) return;
+  
+  if (lines.length === 0) {
+    container.innerHTML = '<div class="summary-line summary-zero">No products selected yet</div>';
+    return;
+  }
+  
+  var html = "";
+  for (var j = 0; j < lines.length; j++) {
+    html += '<div class="summary-line"><span>' + lines[j].q + ' × ' + lines[j].p + '</span><span>$' + lines[j].s.toFixed(2) + '</span></div>';
+  }
+  html += '<div class="summary-line summary-total"><span>Order Total</span><span>$' + total.toFixed(2) + '</span></div>';
+  container.innerHTML = html;
+}
+
+// Attach listeners when page loads
+window.addEventListener('DOMContentLoaded', function() {
+  var inputs = document.querySelectorAll('.qty-input');
+  for (var i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener('input', updateSummary);
+    inputs[i].addEventListener('change', updateSummary);
+  }
+  updateSummary();
+});
+
+// ── SHAREPOINT CONFIG ──
+var SP_SITE = "https://netorgft4558149.sharepoint.com/sites/IlluminateFamily";
+var SP_LIST = "Employee Skincare Order Results";
+
+async function getDigest() {
+  var res = await fetch(SP_SITE + "/_api/contextinfo", {
+    method: "POST",
+    headers: { "Accept": "application/json;odata=verbose" },
+    credentials: "include"
+  });
+  var data = await res.json();
+  return data.d.GetContextWebInformation.FormDigestValue;
+}
+
+// ── SUBMIT ──
+document.getElementById("orderForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  
+  var nameVal = document.getElementById("requesterName").value.trim();
+  var emailVal = document.getElementById("requesterEmail").value.trim();
+  
+  if (!nameVal) { alert("Please enter your full name."); return; }
+  if (!emailVal || !emailVal.includes("@")) { alert("Please enter a valid email address."); return; }
+  
+  var rows = document.querySelectorAll("tr[data-product]");
+  var hasItems = false;
+  var orderItems = [];
+  
+  for (var i = 0; i < rows.length; i++) {
+    var input = rows[i].querySelector(".qty-input");
+    if (!input) continue;
+    var qty = parseInt(input.value) || 0;
+    if (qty > 0) {
+      hasItems = true;
+      var price = parseFloat(rows[i].getAttribute("data-price"));
+      orderItems.push({
+        vendor: rows[i].getAttribute("data-vendor"),
+        product: rows[i].getAttribute("data-product"),
+        price: price,
+        quantity: qty,
+        subtotal: qty * price
+      });
+    }
+  }
+  
+  if (!hasItems) { alert("Please select at least one product."); return; }
+  
+  var orderTotal = 0;
+  for (var i = 0; i < orderItems.length; i++) { orderTotal += orderItems[i].subtotal; }
+  
+  var orderSummary = "";
+  for (var i = 0; i < orderItems.length; i++) {
+    var item = orderItems[i];
+    orderSummary += item.vendor + " — " + item.product + " x" + item.quantity + " @ $" + item.price.toFixed(2) + " = $" + item.subtotal.toFixed(2) + "\n";
+  }
+  
+  var submitBtn = document.querySelector(".btn-primary");
+  var origText = submitBtn.innerHTML;
+  submitBtn.innerHTML = "Submitting…";
+  submitBtn.disabled = true;
+  
+  try {
+    var digest = await getDigest();
+    var payload = {
+      "__metadata": { "type": "SP.Data.Employee_x0020_Skincare_x0020_Order_x0020_ResultsListItem" },
+      "Title": "Order — " + nameVal + " — " + new Date().toLocaleDateString(),
+      "EmployeeName": nameVal,
+      "EmployeeEmail": emailVal,
+      "Phone": document.getElementById("phone").value || "N/A",
+      "Notes": document.getElementById("notes").value || "",
+      "OrderSummary": orderSummary,
+      "OrderTotal": parseFloat(orderTotal.toFixed(2)),
+      "SubmittedAt": new Date().toISOString()
+    };
+    
+    var res = await fetch(SP_SITE + "/_api/web/lists/getbytitle('" + encodeURIComponent(SP_LIST) + "')/items", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Accept": "application/json;odata=verbose",
+        "Content-Type": "application/json;odata=verbose",
+        "X-RequestDigest": digest
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    if (res.ok || res.status === 201) {
+      document.getElementById("successModal").classList.add("open");
+    } else {
+      throw new Error("HTTP " + res.status);
+    }
+  } catch(err) {
+    alert("Submission failed. Error: " + err.message);
+  } finally {
+    submitBtn.innerHTML = origText;
+    submitBtn.disabled = false;
+  }
+});
+
+// ── CLEAR FORM ──
+function clearForm() {
+  if (!confirm("Clear all selections?")) return;
+  var inputs = document.querySelectorAll(".qty-input");
+  for (var i = 0; i < inputs.length; i++) { inputs[i].value = 0; }
+  document.getElementById("requesterName").value = "";
+  document.getElementById("requesterEmail").value = "";
+  document.getElementById("phone").value = "";
+  document.getElementById("notes").value = "";
+  updateSummary();
+}
+
+// ── MODAL ──
+function closeModal() { document.getElementById("successModal").classList.remove("open"); }
+function newOrder() { closeModal(); clearForm(); }
+</script>
+</body>
+</html>
