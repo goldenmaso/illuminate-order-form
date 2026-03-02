@@ -195,6 +195,29 @@
     .admin-empty h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--text-secondary); margin-bottom: 6px; }
     .admin-empty p { font-size: 13px; font-weight: 300; }
 
+    /* â”€â”€ Admin Status & Notes â”€â”€ */
+    .status-select { height: 28px; padding: 0 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--dark-mid); color: var(--text-muted); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; outline: none; cursor: pointer; transition: border-color var(--transition), color var(--transition); }
+    .status-select:focus { border-color: var(--gold); }
+    .status-select.status-pending { border-color: #555; color: var(--text-muted); }
+    .status-select.status-ordered { border-color: #4a90d9; color: #4a90d9; background: rgba(74,144,217,.07); }
+    .status-select.status-received { border-color: #5cb85c; color: #5cb85c; background: rgba(92,184,92,.07); }
+    .admin-note-input { width: 100%; min-width: 150px; padding: 5px 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-secondary); font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 300; outline: none; resize: none; line-height: 1.5; box-sizing: border-box; transition: border-color var(--transition), background var(--transition); }
+    .admin-note-input:hover { border-color: var(--border); background: var(--dark-mid); }
+    .admin-note-input:focus { border-color: var(--gold); background: var(--dark-mid); }
+    /* â”€â”€ Admin Filters â”€â”€ */
+    .admin-filter-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 14px 0 4px; border-top: 1px solid var(--border); margin-top: 4px; }
+    .admin-filter-label { font-size: 10px; color: var(--text-muted); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+    .admin-filter-select { height: 34px; padding: 0 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: 'Jost', sans-serif; font-size: 12px; color: var(--text-primary); background: var(--dark-mid); outline: none; letter-spacing: .02em; transition: border-color var(--transition); cursor: pointer; }
+    .admin-filter-select:focus { border-color: var(--gold); }
+    .admin-filter-date { height: 34px; padding: 0 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: 'Jost', sans-serif; font-size: 12px; color: var(--text-primary); background: var(--dark-mid); outline: none; transition: border-color var(--transition); color-scheme: dark; }
+    .admin-filter-date:focus { border-color: var(--gold); }
+    .admin-filter-clear { font-size: 11px; color: var(--text-muted); letter-spacing: .04em; background: none; border: none; cursor: pointer; text-decoration: underline; transition: color var(--transition); padding: 0; margin-left: 4px; }
+    .admin-filter-clear:hover { color: var(--gold-light); }
+    /* â”€â”€ Vendor Breakdown â”€â”€ */
+    .vendor-breakdown { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+    .vendor-stat { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); letter-spacing: .04em; padding: 6px 14px; background: var(--dark); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+    .vendor-stat .vendor-label { color: var(--text-secondary); }
+    .vendor-stat strong { color: var(--gold-light); font-weight: 600; }
     .ship-to-group { display: flex; flex-wrap: wrap; gap: 10px; padding: 4px 0; }
     .ship-to-option { display: inline-flex; align-items: center; gap: 9px; cursor: pointer; padding: 8px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--dark-mid); transition: border-color var(--transition), background var(--transition); user-select: none; }
     .ship-to-option:hover { border-color: var(--border-gold); }
@@ -438,7 +461,24 @@
         Clear All
       </button>
     </div>
+    <div class="admin-filter-row">
+      <span class="admin-filter-label">Location:</span>
+      <select class="admin-filter-select" id="filterLocation" onchange="renderAdmin()">
+        <option value="">All Locations</option>
+        <option value="San Jose 206">San Jose 206</option>
+        <option value="San Jose Skin">San Jose Skin</option>
+        <option value="Palo Alto">Palo Alto</option>
+        <option value="Morgan Hill">Morgan Hill</option>
+        <option value="InHands">InHands</option>
+      </select>
+      <span class="admin-filter-label">From:</span>
+      <input type="date" class="admin-filter-date" id="filterDateFrom" onchange="renderAdmin()" />
+      <span class="admin-filter-label">To:</span>
+      <input type="date" class="admin-filter-date" id="filterDateTo" onchange="renderAdmin()" />
+      <button class="admin-filter-clear" onclick="clearAdminFilters()">Clear filters</button>
+    </div>
   </div>
+  <div class="vendor-breakdown" id="vendorBreakdown" style="display:none;"></div>
   <div class="admin-table-wrap">
     <table class="admin-table" id="adminTable">
       <thead>
@@ -450,7 +490,9 @@
           <th>Phone</th>
           <th onclick="sortAdmin('total')">Total <span class="sort-arrow">&#9650;</span></th>
           <th>Items</th>
-          <th>Ship To Location</th>
+          <th>Ship To</th>
+          <th onclick="sortAdmin('status')">Status <span class="sort-arrow">&#9650;</span></th>
+          <th>Admin Notes</th>
           <th></th>
         </tr>
       </thead>
@@ -659,39 +701,75 @@ function sortAdmin(key) {
   renderAdmin();
 }
 
+var adminFilteredOrders = [];
+
 function renderAdmin() {
-  var orders = getOrders();
+  var allOrders = getOrders();
   var search = (document.getElementById('adminSearch').value || '').toLowerCase();
+  var locFilter = (document.getElementById('filterLocation') || {}).value || '';
+  var dateFrom = (document.getElementById('filterDateFrom') || {}).value || '';
+  var dateTo   = (document.getElementById('filterDateTo')   || {}).value || '';
 
   // Filter
-  if (search) {
-    orders = orders.filter(function(o) {
-      var blob = (o.name + ' ' + o.email + ' ' + o.phone + ' ' + (o.shipTo || '')).toLowerCase();
+  var filtered = allOrders.filter(function(o) {
+    if (search) {
+      var blob = (o.name + ' ' + o.email + ' ' + o.phone + ' ' + (o.shipTo || '') + ' ' + (o.status || '') + ' ' + (o.adminNotes || '')).toLowerCase();
       for (var i = 0; i < o.items.length; i++) { blob += ' ' + o.items[i].product.toLowerCase() + ' ' + o.items[i].vendor.toLowerCase(); }
-      return blob.indexOf(search) !== -1;
-    });
-  }
+      if (blob.indexOf(search) === -1) return false;
+    }
+    if (locFilter && (!o.shipTo || o.shipTo.indexOf(locFilter) === -1)) return false;
+    if (dateFrom && new Date(o.date) < new Date(dateFrom)) return false;
+    if (dateTo   && new Date(o.date) > new Date(dateTo + 'T23:59:59')) return false;
+    return true;
+  });
 
   // Sort
-  orders.sort(function(a, b) {
+  filtered.sort(function(a, b) {
     var va, vb;
-    if (adminSortKey === 'id') { va = a.id; vb = b.id; }
-    else if (adminSortKey === 'date') { va = a.date; vb = b.date; }
-    else if (adminSortKey === 'name') { va = a.name.toLowerCase(); vb = b.name.toLowerCase(); }
-    else if (adminSortKey === 'email') { va = a.email.toLowerCase(); vb = b.email.toLowerCase(); }
-    else if (adminSortKey === 'total') { va = a.total; vb = b.total; }
+    if (adminSortKey === 'id')     { va = a.id; vb = b.id; }
+    else if (adminSortKey === 'date')   { va = a.date; vb = b.date; }
+    else if (adminSortKey === 'name')   { va = a.name.toLowerCase(); vb = b.name.toLowerCase(); }
+    else if (adminSortKey === 'email')  { va = a.email.toLowerCase(); vb = b.email.toLowerCase(); }
+    else if (adminSortKey === 'total')  { va = a.total; vb = b.total; }
+    else if (adminSortKey === 'status') { va = (a.status || 'Pending').toLowerCase(); vb = (b.status || 'Pending').toLowerCase(); }
     else { va = a.id; vb = b.id; }
     if (va < vb) return adminSortAsc ? -1 : 1;
     if (va > vb) return adminSortAsc ? 1 : -1;
     return 0;
   });
 
+  adminFilteredOrders = filtered;
+
   // Stats
-  var allOrders = getOrders();
-  var totalRev = 0;
-  for (var s = 0; s < allOrders.length; s++) totalRev += allOrders[s].total;
-  document.getElementById('adminStatCount').innerHTML = 'Orders: <strong>' + allOrders.length + '</strong>';
-  document.getElementById('adminStatTotal').innerHTML = 'Revenue: <strong>$' + totalRev.toFixed(2) + '</strong>';
+  var filteredTotal = 0;
+  for (var s = 0; s < filtered.length; s++) filteredTotal += filtered[s].total;
+  var countLabel = filtered.length !== allOrders.length ? filtered.length + ' of ' + allOrders.length : String(filtered.length);
+  document.getElementById('adminStatCount').innerHTML = 'Orders: <strong>' + countLabel + '</strong>';
+  document.getElementById('adminStatTotal').innerHTML = 'Revenue: <strong>$' + filteredTotal.toFixed(2) + '</strong>';
+
+  // Vendor breakdown
+  var vendors = {};
+  for (var vi = 0; vi < filtered.length; vi++) {
+    for (var vj = 0; vj < filtered[vi].items.length; vj++) {
+      var vn = filtered[vi].items[vj].vendor;
+      vendors[vn] = (vendors[vn] || 0) + filtered[vi].items[vj].subtotal;
+    }
+  }
+  var vbEl = document.getElementById('vendorBreakdown');
+  if (vbEl) {
+    var vKeys = Object.keys(vendors).sort();
+    if (vKeys.length > 0) {
+      var vbHtml = '';
+      for (var vk = 0; vk < vKeys.length; vk++) {
+        vbHtml += '<div class="vendor-stat"><span class="vendor-label">' + escapeHtml(vKeys[vk]) + '</span><strong>$' + vendors[vKeys[vk]].toFixed(2) + '</strong></div>';
+      }
+      vbEl.innerHTML = vbHtml;
+      vbEl.style.display = '';
+    } else {
+      vbEl.innerHTML = '';
+      vbEl.style.display = 'none';
+    }
+  }
 
   // Header sort indicators
   var ths = document.querySelectorAll('#adminTable thead th');
@@ -701,15 +779,15 @@ function renderAdmin() {
   var tbody = document.getElementById('adminBody');
   var empty = document.getElementById('adminEmpty');
 
-  if (orders.length === 0) {
+  if (filtered.length === 0) {
     tbody.innerHTML = '';
-    empty.style.display = '';
-    document.querySelector('.admin-table-wrap').style.display = allOrders.length === 0 ? 'none' : '';
-    if (allOrders.length === 0) { empty.style.display = ''; }
-    else if (search && orders.length === 0) {
+    if (allOrders.length === 0) {
+      document.querySelector('.admin-table-wrap').style.display = 'none';
+      empty.style.display = '';
+    } else {
       document.querySelector('.admin-table-wrap').style.display = '';
       empty.style.display = 'none';
-      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted);font-style:italic;">No orders match your search.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:40px;color:var(--text-muted);font-style:italic;">No orders match your filters.</td></tr>';
     }
     return;
   }
@@ -718,27 +796,53 @@ function renderAdmin() {
   document.querySelector('.admin-table-wrap').style.display = '';
 
   var html = '';
-  for (var i = 0; i < orders.length; i++) {
-    var o = orders[i];
+  for (var i = 0; i < filtered.length; i++) {
+    var o = filtered[i];
     var d = new Date(o.date);
     var dateStr = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
     var itemsHtml = '';
     for (var j = 0; j < o.items.length; j++) {
       itemsHtml += '<span class="item-line">' + o.items[j].quantity + 'x ' + escapeHtml(o.items[j].product) + ' ($' + o.items[j].subtotal.toFixed(2) + ')</span>';
     }
+    var status = o.status || 'Pending';
+    var statusCls = 'status-' + status.toLowerCase();
+    var noteVal = (o.adminNotes || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     html += '<tr>' +
       '<td class="col-id">#' + o.id + '</td>' +
       '<td class="col-date">' + dateStr + '</td>' +
       '<td>' + escapeHtml(o.name) + '</td>' +
       '<td>' + escapeHtml(o.email) + '</td>' +
-      '<td>' + escapeHtml(o.phone || '—') + '</td>' +
+      '<td>' + escapeHtml(o.phone || '\u2014') + '</td>' +
       '<td class="col-total">$' + o.total.toFixed(2) + '</td>' +
       '<td class="col-items">' + itemsHtml + '</td>' +
-      '<td style="font-size:12px;color:var(--text-muted);max-width:160px;">' + escapeHtml(o.shipTo || '—') + '</td>' +
+      '<td style="font-size:12px;color:var(--text-muted);max-width:140px;">' + escapeHtml(o.shipTo || '\u2014') + '</td>' +
+      '<td><select class="status-select ' + statusCls + '" onchange="updateOrder(' + o.id + ',\'status\',this.value);this.className=\'status-select status-\'+this.value.toLowerCase();">' +
+        '<option' + (status==='Pending'?' selected':'') + '>Pending</option>' +
+        '<option' + (status==='Ordered'?' selected':'') + '>Ordered</option>' +
+        '<option' + (status==='Received'?' selected':'') + '>Received</option>' +
+      '</select></td>' +
+      '<td><textarea class="admin-note-input" rows="2" placeholder="Add note..." onblur="updateOrder(' + o.id + ',\'adminNotes\',this.value)">' + noteVal + '</textarea></td>' +
       '<td class="col-actions"><button title="Delete order" onclick="deleteOrder(' + o.id + ')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button></td>' +
       '</tr>';
   }
   tbody.innerHTML = html;
+}
+
+
+function updateOrder(id, field, value) {
+  var orders = getOrders();
+  for (var i = 0; i < orders.length; i++) {
+    if (orders[i].id === id) { orders[i][field] = value; break; }
+  }
+  saveOrders(orders);
+}
+
+function clearAdminFilters() {
+  document.getElementById('adminSearch').value = '';
+  document.getElementById('filterLocation').value = '';
+  document.getElementById('filterDateFrom').value = '';
+  document.getElementById('filterDateTo').value = '';
+  renderAdmin();
 }
 
 function deleteOrder(id) {
@@ -756,12 +860,14 @@ function clearAllOrders() {
 
 /* ═══════════════ CSV EXPORT ═══════════════ */
 function exportCSV() {
-  var orders = getOrders();
-  if (orders.length === 0) { alert('No orders to export.'); return; }
-
-  var rows = [['Order ID','Date','Name','Email','Phone','Ship To Location','Vendor','Product','Unit Price','Quantity','Subtotal','Order Total']];
-  for (var i = 0; i < orders.length; i++) {
-    var o = orders[i];
+  var toExport = adminFilteredOrders;
+  if (toExport.length === 0) {
+    alert(getOrders().length === 0 ? 'No orders to export.' : 'No orders match current filters.');
+    return;
+  }
+  var rows = [['Order ID','Date','Name','Email','Phone','Ship To Location','Status','Vendor','Product','Unit Price','Quantity','Subtotal','Order Total','Admin Notes']];
+  for (var i = 0; i < toExport.length; i++) {
+    var o = toExport[i];
     var d = new Date(o.date);
     var dateStr = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
     for (var j = 0; j < o.items.length; j++) {
@@ -773,16 +879,17 @@ function exportCSV() {
         '"' + o.email.replace(/"/g, '""') + '"',
         '"' + (o.phone || '').replace(/"/g, '""') + '"',
         '"' + (o.shipTo || '').replace(/"/g, '""') + '"',
+        '"' + (o.status || 'Pending').replace(/"/g, '""') + '"',
         '"' + it.vendor.replace(/"/g, '""') + '"',
         '"' + it.product.replace(/"/g, '""') + '"',
         it.price.toFixed(2),
         it.quantity,
         it.subtotal.toFixed(2),
-        o.total.toFixed(2)
+        o.total.toFixed(2),
+        '"' + (o.adminNotes || '').replace(/"/g, '""') + '"'
       ]);
     }
   }
-
   var csv = '';
   for (var r = 0; r < rows.length; r++) csv += rows[r].join(',') + '\n';
   var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
