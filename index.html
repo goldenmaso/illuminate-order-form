@@ -214,6 +214,22 @@
     .admin-filter-clear { font-size: 11px; color: var(--text-muted); letter-spacing: .04em; background: none; border: none; cursor: pointer; text-decoration: underline; transition: color var(--transition); padding: 0; margin-left: 4px; }
     .admin-filter-clear:hover { color: var(--gold-light); }
     /* â”€â”€ Vendor Breakdown â”€â”€ */
+    /* ── Vendor Management (Admin) ── */
+    .vendor-mgmt-section { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .vendor-mgmt-title { font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+    .vendor-toggle-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .vendor-toggle-card { display: flex; align-items: center; gap: 16px; padding: 14px 22px; background: var(--dark); border: 1px solid var(--border); border-radius: var(--radius-sm); transition: border-color var(--transition), background var(--transition); }
+    .vendor-toggle-card.active { border-color: var(--border-gold); background: rgba(184,148,42,.04); }
+    .vendor-toggle-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 400; color: var(--text-primary); letter-spacing: .04em; min-width: 76px; }
+    .vendor-toggle-status { font-size: 10px; letter-spacing: .1em; font-weight: 600; text-transform: uppercase; }
+    .vendor-toggle-card.active .vendor-toggle-status { color: var(--gold-light); }
+    .vendor-toggle-card:not(.active) .vendor-toggle-status { color: var(--text-muted); }
+    .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle-slider { position: absolute; cursor: pointer; inset: 0; background: var(--dark-mid); border: 1px solid var(--border); border-radius: 24px; transition: all var(--transition); }
+    .toggle-slider::before { content: ''; position: absolute; height: 16px; width: 16px; left: 3px; top: 3px; background: var(--text-muted); border-radius: 50%; transition: all var(--transition); }
+    .toggle-switch input:checked + .toggle-slider { background: rgba(184,148,42,.15); border-color: var(--gold); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); background: var(--gold); }
     .vendor-breakdown { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
     .vendor-stat { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); letter-spacing: .04em; padding: 6px 14px; background: var(--dark); border: 1px solid var(--border); border-radius: var(--radius-sm); }
     .vendor-stat .vendor-label { color: var(--text-secondary); }
@@ -338,7 +354,7 @@
       </div>
       <div class="card-body">
         <!-- ALASTIN -->
-        <div class="vendor-section">
+        <div class="vendor-section" id="vendor-section-Alastin">
           <div class="vendor-label"><span class="vendor-name">Alastin</span><div class="vendor-line"></div></div>
           <p class="vendor-notice">IPS must meet a quarterly purchasing requirement with Alastin to maintain eligibility for staff orders. We cannot guarantee this order will be placed.</p>
           <table class="product-table" id="table-alastin">
@@ -358,7 +374,7 @@
         </div>
         <div class="divider-gold"></div>
         <!-- PLATED -->
-        <div class="vendor-section">
+        <div class="vendor-section" id="vendor-section-Plated">
           <div class="vendor-label"><span class="vendor-name">Plated</span><div class="vendor-line"></div></div>
           <p class="vendor-notice">Important: IPS must meet a quarterly purchasing requirement with Plated to maintain eligibility for staff orders. We cannot guarantee this order will be placed. &nbsp;|&nbsp; Min order: 5 units total (pooled across all staff) &nbsp;|&nbsp; Max order: 24 units total (pooled across all staff) &nbsp;|&nbsp; Eligible products: Only products currently offered at IPS locations</p>
           <table class="product-table" id="table-plated">
@@ -376,7 +392,7 @@
         </div>
         <div class="divider-gold"></div>
         <!-- EPICUTIS -->
-        <div class="vendor-section">
+        <div class="vendor-section" id="vendor-section-Epicutis">
           <div class="vendor-label"><span class="vendor-name">Epicutis</span><div class="vendor-line"></div></div>
           <p class="vendor-notice">Available to order quarterly with no restrictions or minimum orders.</p>
           <table class="product-table" id="table-epicutis">
@@ -444,6 +460,36 @@
     <h1>Admin Portal</h1>
     <div class="page-header-rule"></div>
     <p>Review, search, and export all submitted employee skincare orders.</p>
+  </div>
+  <!-- MANUFACTURER VISIBILITY -->
+  <div class="vendor-mgmt-section">
+    <div class="vendor-mgmt-title">Manufacturer Visibility</div>
+    <div class="vendor-toggle-row">
+      <div class="vendor-toggle-card active" id="vtc-Alastin">
+        <label class="toggle-switch">
+          <input type="checkbox" id="vt-Alastin" checked onchange="toggleVendor('Alastin', this.checked)" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="vendor-toggle-name">Alastin</span>
+        <span class="vendor-toggle-status" id="vts-Alastin">Visible</span>
+      </div>
+      <div class="vendor-toggle-card active" id="vtc-Plated">
+        <label class="toggle-switch">
+          <input type="checkbox" id="vt-Plated" checked onchange="toggleVendor('Plated', this.checked)" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="vendor-toggle-name">Plated</span>
+        <span class="vendor-toggle-status" id="vts-Plated">Visible</span>
+      </div>
+      <div class="vendor-toggle-card active" id="vtc-Epicutis">
+        <label class="toggle-switch">
+          <input type="checkbox" id="vt-Epicutis" checked onchange="toggleVendor('Epicutis', this.checked)" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="vendor-toggle-name">Epicutis</span>
+        <span class="vendor-toggle-status" id="vts-Epicutis">Visible</span>
+      </div>
+    </div>
   </div>
   <div class="admin-toolbar">
     <div class="admin-toolbar-left">
@@ -826,6 +872,7 @@ function renderAdmin() {
       '</tr>';
   }
   tbody.innerHTML = html;
+  updateVendorToggleUI();
 }
 
 
@@ -903,6 +950,58 @@ function exportCSV() {
   URL.revokeObjectURL(url);
 }
 
+/* ═══════════════ VENDOR VISIBILITY ═══════════════ */
+var VENDORS = ['Alastin', 'Plated', 'Epicutis'];
+
+function getVendorVisibility() {
+  try {
+    var stored = localStorage.getItem('vendorVisibility');
+    if (stored) return JSON.parse(stored);
+  } catch(e) {}
+  return { Alastin: true, Plated: true, Epicutis: true };
+}
+
+function saveVendorVisibility(vis) {
+  localStorage.setItem('vendorVisibility', JSON.stringify(vis));
+}
+
+function applyVendorVisibility() {
+  var vis = getVendorVisibility();
+  for (var i = 0; i < VENDORS.length; i++) {
+    var v = VENDORS[i];
+    var section = document.getElementById('vendor-section-' + v);
+    if (!section) continue;
+    var hiding = !vis[v];
+    section.style.display = hiding ? 'none' : '';
+    if (hiding) {
+      var inputs = section.querySelectorAll('.qty-input');
+      for (var j = 0; j < inputs.length; j++) inputs[j].value = 0;
+    }
+  }
+  updateSummary();
+  updateVendorToggleUI();
+}
+
+function updateVendorToggleUI() {
+  var vis = getVendorVisibility();
+  for (var i = 0; i < VENDORS.length; i++) {
+    var v = VENDORS[i];
+    var cb     = document.getElementById('vt-'  + v);
+    var card   = document.getElementById('vtc-' + v);
+    var status = document.getElementById('vts-' + v);
+    if (cb)     cb.checked = vis[v];
+    if (card)   card.classList.toggle('active', vis[v]);
+    if (status) status.textContent = vis[v] ? 'Visible' : 'Hidden';
+  }
+}
+
+function toggleVendor(vendorName, enabled) {
+  var vis = getVendorVisibility();
+  vis[vendorName] = enabled;
+  saveVendorVisibility(vis);
+  applyVendorVisibility();
+}
+
 /* ═══════════════ INIT ═══════════════ */
 window.addEventListener('DOMContentLoaded', function() {
   var inputs = document.querySelectorAll('.qty-input');
@@ -910,7 +1009,7 @@ window.addEventListener('DOMContentLoaded', function() {
     inputs[i].addEventListener('input', updateSummary);
     inputs[i].addEventListener('change', updateSummary);
   }
-  updateSummary();
+  applyVendorVisibility();
 });
 </script>
 <!-- PASSWORD GATE -->
