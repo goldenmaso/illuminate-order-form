@@ -1,1 +1,1070 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employee Skin Care Order Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black:       #0A0A0A;
+      --dark:        #141414;
+      --dark-mid:    #1E1E1E;
+      --dark-card:   #1A1A1A;
+      --gold:        #B8942A;
+      --gold-light:  #D4AF5A;
+      --gold-pale:   #F5EDD6;
+      --gold-dim:    #2A2318;
+      --white:       #FFFFFF;
+      --off-white:   #F8F5EF;
+      --border:      #2E2E2E;
+      --border-gold: #6B5420;
+      --text-primary:#F0EBE0;
+      --text-secondary:#A89880;
+      --text-muted:  #5A5040;
+      --surface:     #111111;
+      --success:     #4A9B6F;
+      --success-bg:  #0D2018;
+      --error:       #C05050;
+      --error-bg:    #240E0E;
+      --shadow-sm:   0 1px 4px rgba(0,0,0,.4);
+      --shadow-md:   0 4px 20px rgba(0,0,0,.5);
+      --shadow-lg:   0 12px 48px rgba(0,0,0,.65);
+      --radius:      8px;
+      --radius-sm:   5px;
+      --transition:  180ms cubic-bezier(.4,0,.2,1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--surface);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    .top-banner {
+      background: var(--black);
+      border-bottom: 1px solid var(--border-gold);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,.6);
+    }
+    .banner-logo img { height: 38px; width: auto; display: block; }
+    .banner-nav { display: flex; gap: 8px; align-items: center; }
+    .banner-nav .nav-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      height: 36px; padding: 0 16px; border-radius: var(--radius-sm);
+      font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 500;
+      cursor: pointer; border: 1px solid var(--border); background: transparent;
+      color: var(--text-secondary); letter-spacing: .08em; text-transform: uppercase;
+      transition: all var(--transition);
+    }
+    .banner-nav .nav-btn:hover { border-color: var(--border-gold); color: var(--gold-light); }
+    .banner-nav .nav-btn.active { background: var(--gold-dim); border-color: var(--border-gold); color: var(--gold-light); }
+    .banner-nav .nav-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .page-wrap { max-width: 980px; margin: 0 auto; padding: 56px 28px 100px; }
+    .page-header { margin-bottom: 48px; text-align: center; animation: fadeUp .5s ease both; }
+    .page-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; color: var(--text-primary); line-height: 1.2; margin-bottom: 12px; letter-spacing: .02em; }
+    .page-header-rule { width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 0 auto 16px; }
+    .page-header p { font-size: 14px; color: var(--white); max-width: 720px; margin: 0 auto; font-weight: 300; letter-spacing: .03em; }
+    .submit-deadline { margin-top: 18px; font-size: 20px; font-weight: 700; color: var(--white); letter-spacing: .06em; text-transform: uppercase; }
+    .submit-deadline-date { color: var(--gold-light); }
+    .admin-deadline-row { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .admin-deadline-label { font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); white-space: nowrap; }
+    .admin-deadline-input { height: 34px; padding: 0 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: 'Jost', sans-serif; font-size: 13px; color: var(--text-primary); background: var(--dark-mid); outline: none; transition: border-color var(--transition); color-scheme: dark; }
+    .admin-deadline-input:focus { border-color: var(--gold); }
+    .admin-deadline-clear { font-size: 11px; color: var(--text-muted); letter-spacing: .04em; background: none; border: none; cursor: pointer; text-decoration: underline; transition: color var(--transition); padding: 0; }
+    .admin-deadline-clear:hover { color: var(--gold-light); }
+    .card { background: var(--dark-card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 28px; animation: fadeUp .5s ease both; }
+    .card:nth-child(2) { animation-delay: .06s; }
+    .card:nth-child(3) { animation-delay: .12s; }
+    .card-header { display: flex; align-items: center; gap: 14px; padding: 20px 28px; border-bottom: 1px solid var(--border); background: linear-gradient(to right, var(--dark), var(--dark-card)); }
+    .card-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--gold-dim); border: 1px solid var(--border-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .card-icon svg { width: 16px; height: 16px; fill: none; stroke: var(--gold-light); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500; color: var(--text-primary); letter-spacing: .04em; }
+    .card-subtitle { font-size: 11.5px; color: var(--white); margin-top: 2px; letter-spacing: .04em; font-weight: 300; }
+    .card-badge { margin-left: auto; font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: var(--gold-dim); color: var(--gold); letter-spacing: .1em; text-transform: uppercase; border: 1px solid var(--border-gold); }
+    .card-body { padding: 28px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; }
+    .field-full { grid-column: 1 / -1; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); letter-spacing: .12em; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
+    .field-label .required { color: var(--gold); font-size: 13px; line-height: 1; }
+    .field-input { height: 42px; padding: 0 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: 'Jost', sans-serif; font-size: 14px; color: var(--text-primary); background: var(--dark-mid); transition: border-color var(--transition), box-shadow var(--transition); outline: none; width: 100%; letter-spacing: .02em; }
+    .field-input::placeholder { color: var(--text-muted); font-weight: 300; }
+    .field-input:hover { border-color: var(--border-gold); }
+    .field-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,148,42,.12); background: #1C1A14; }
+    textarea.field-input { height: auto; padding: 10px 14px; resize: vertical; min-height: 80px; line-height: 1.6; }
+    select.field-input { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235A5040' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; cursor: pointer; }
+    select.field-input option { background: var(--dark-mid); color: var(--text-primary); }
+    .field-wrap { position: relative; }
+    .field-wrap .field-input { padding-left: 38px; }
+    .field-prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-muted); display: flex; align-items: center; }
+    .field-prefix svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .vendor-section { margin-bottom: 0; }
+    .vendor-label { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .vendor-notice { font-size: 12.5px; color: var(--white); font-weight: 300; letter-spacing: .02em; line-height: 1.6; margin-bottom: 14px; padding: 10px 14px; background: rgba(184,148,42,.06); border-left: 3px solid var(--border-gold); border-radius: 0 4px 4px 0; }
+    .vendor-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: var(--gold-light); letter-spacing: .06em; }
+    .vendor-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--border-gold), transparent); }
+    .product-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .product-table thead tr { border-bottom: 1px solid var(--border-gold); }
+    .product-table thead th { font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); padding: 0 0 10px; text-align: left; }
+    .product-table thead th:last-child { text-align: center; width: 100px; }
+    .product-table thead th:nth-child(2) { text-align: right; width: 110px; }
+    .product-table tbody tr { border-bottom: 1px solid #222; transition: background var(--transition); }
+    .product-table tbody tr:last-child { border-bottom: none; }
+    .product-table tbody tr:hover { background: rgba(184,148,42,.04); }
+    .product-table td { padding: 12px 0; vertical-align: middle; color: var(--text-primary); font-weight: 300; }
+    .product-table td:nth-child(2) { text-align: right; color: var(--white); font-size: 13px; font-weight: 500; padding-right: 16px; white-space: nowrap; }
+    .product-table td:last-child { text-align: center; }
+    .product-name { letter-spacing: .02em; }
+    .prod-size { font-size: 11px; color: var(--text-muted); font-weight: 300; margin-left: 3px; }
+    .qty-input { width: 42px; height: 28px; text-align: center; border: 1px solid var(--border); border-left: none; border-right: none; background: var(--dark); color: var(--text-primary); font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500; outline: none; }
+    .qty-input:focus { border-color: var(--gold); background: #1C1A14; }
+    .order-summary { background: var(--dark); border: 1px solid var(--border-gold); border-radius: var(--radius); padding: 20px 24px; margin-top: 4px; }
+    .summary-title { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--white); margin-bottom: 14px; }
+    .summary-lines { display: flex; flex-direction: column; gap: 6px; }
+    .summary-line { display: flex; justify-content: space-between; font-size: 13px; color: var(--white); font-weight: 300; }
+    .summary-line.summary-total { border-top: 1px solid var(--border-gold); padding-top: 10px; margin-top: 6px; font-size: 15px; font-weight: 500; color: var(--white); }
+    .summary-zero { color: var(--white); font-size: 12px; }
+    .form-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; animation: fadeUp .5s .25s ease both; }
+    .actions-left { display: flex; gap: 10px; }
+    .actions-right { display: flex; gap: 10px; }
+    .btn { display: inline-flex; align-items: center; gap: 7px; height: 42px; padding: 0 24px; border-radius: var(--radius-sm); font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all var(--transition); letter-spacing: .08em; text-transform: uppercase; outline: none; white-space: nowrap; }
+    .btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .btn-ghost { background: transparent; color: var(--white); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--border-gold); color: var(--text-secondary); }
+    .btn-primary { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%); color: var(--black); box-shadow: 0 2px 12px rgba(184,148,42,.3); }
+    .btn-primary:hover { box-shadow: 0 4px 20px rgba(184,148,42,.45); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid var(--error); }
+    .btn-danger:hover { background: var(--error); color: var(--white); }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8); backdrop-filter: blur(6px); z-index: 200; align-items: center; justify-content: center; animation: fadeIn .2s ease; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--dark-card); border: 1px solid var(--border-gold); border-radius: 12px; padding: 52px 44px; max-width: 620px; width: 94%; text-align: center; box-shadow: var(--shadow-lg); animation: scaleIn .3s cubic-bezier(.34,1.56,.64,1) both; max-height: 90vh; overflow-y: auto; }
+    .modal-icon { width: 68px; height: 68px; background: var(--gold-dim); border: 1px solid var(--border-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+    .modal-icon svg { width: 30px; height: 30px; stroke: var(--gold-light); fill: none; stroke-width: 2; }
+    .modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--text-primary); margin-bottom: 10px; letter-spacing: .04em; }
+    .modal p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; font-weight: 300; }
+    .modal-rule { width: 40px; height: 1px; background: var(--border-gold); margin: 16px auto; }
+    .modal-actions { margin-top: 28px; display: flex; gap: 10px; justify-content: center; }
+    .modal-order-table { width: 100%; border-collapse: collapse; text-align: left; margin: 16px 0 8px; }
+    .modal-order-table thead th { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); padding: 0 0 8px; border-bottom: 1px solid var(--border-gold); }
+    .modal-order-table thead th:nth-child(2) { text-align: center; }
+    .modal-order-table thead th:nth-child(3) { text-align: right; }
+    .modal-order-table thead th:last-child { text-align: right; }
+    .modal-order-table tbody td { padding: 8px 0; font-size: 13px; color: var(--text-primary); font-weight: 300; border-bottom: 1px solid #222; }
+    .modal-order-table tbody td:nth-child(2) { text-align: center; }
+    .modal-order-table tbody td:nth-child(3) { text-align: right; color: var(--white); }
+    .modal-order-table tbody td:last-child { text-align: right; color: var(--white); font-weight: 500; }
+    .modal-order-total { display: flex; justify-content: space-between; padding: 14px 0 6px; border-top: 1px solid var(--border-gold); margin-top: 4px; font-size: 16px; font-weight: 500; color: var(--white); }
+    .modal-tax-notice { font-size: 12px; color: var(--white); font-style: italic; font-weight: 300; line-height: 1.6; margin-top: 16px; padding: 12px 16px; background: rgba(184,148,42,.06); border-left: 3px solid var(--border-gold); border-radius: 0 4px 4px 0; text-align: left; }
+    .divider { height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 28px 0; }
+    .divider-gold { height: 1px; background: linear-gradient(to right, transparent, var(--border-gold), transparent); margin: 28px 0; }
 
+    /* ── ADMIN VIEW ── */
+    .admin-wrap { max-width: 1280px; margin: 0 auto; padding: 56px 28px 100px; display: none; }
+    .admin-wrap.visible { display: block; }
+    .admin-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+    .admin-toolbar-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .admin-toolbar-right { display: flex; align-items: center; gap: 10px; }
+    .admin-search { height: 38px; padding: 0 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: 'Jost', sans-serif; font-size: 13px; color: var(--text-primary); background: var(--dark-mid); outline: none; width: 260px; letter-spacing: .02em; transition: border-color var(--transition); }
+    .admin-search::placeholder { color: var(--text-muted); }
+    .admin-search:focus { border-color: var(--gold); }
+    .admin-stat { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); letter-spacing: .04em; padding: 6px 14px; background: var(--dark); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+    .admin-stat strong { color: var(--white); font-weight: 600; }
+    .admin-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--dark-card); }
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
+    .admin-table thead { background: linear-gradient(to right, var(--dark), var(--dark-card)); position: sticky; top: 0; z-index: 2; }
+    .admin-table thead th { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border-gold); cursor: pointer; user-select: none; white-space: nowrap; transition: color var(--transition); }
+    .admin-table thead th:hover { color: var(--gold-light); }
+    .admin-table thead th .sort-arrow { font-size: 10px; margin-left: 4px; opacity: .4; }
+    .admin-table thead th.sorted .sort-arrow { opacity: 1; color: var(--gold); }
+    .admin-table tbody tr { border-bottom: 1px solid #222; transition: background var(--transition); }
+    .admin-table tbody tr:hover { background: rgba(184,148,42,.04); }
+    .admin-table tbody td { padding: 12px 16px; vertical-align: top; color: var(--text-primary); font-weight: 300; }
+    .admin-table .col-id { width: 70px; color: var(--text-muted); font-size: 11px; font-family: monospace; }
+    .admin-table .col-date { white-space: nowrap; font-size: 12px; }
+    .admin-table .col-total { color: var(--white); font-weight: 500; white-space: nowrap; }
+    .admin-table .col-items { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+    .admin-table .col-items .item-line { display: block; }
+    .admin-table .col-actions button { background: none; border: 1px solid var(--border); color: var(--text-muted); width: 30px; height: 30px; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all var(--transition); margin-right: 4px; }
+    .admin-table .col-actions button:hover { border-color: var(--error); color: var(--error); }
+    .admin-table .col-actions button svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .admin-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .admin-empty svg { width: 48px; height: 48px; stroke: var(--border); fill: none; stroke-width: 1.5; margin-bottom: 16px; }
+    .admin-empty h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--text-secondary); margin-bottom: 6px; }
+    .admin-empty p { font-size: 13px; font-weight: 300; }
+
+    /* â”€â”€ Admin Status & Notes â”€â”€ */
+    .status-select { height: 28px; padding: 0 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--dark-mid); color: var(--text-muted); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; outline: none; cursor: pointer; transition: border-color var(--transition), color var(--transition); }
+    .status-select:focus { border-color: var(--gold); }
+    .status-select.status-pending { border-color: #555; color: var(--text-muted); }
+    .status-select.status-ordered { border-color: #4a90d9; color: #4a90d9; background: rgba(74,144,217,.07); }
+    .status-select.status-received { border-color: #5cb85c; color: #5cb85c; background: rgba(92,184,92,.07); }
+    .admin-note-input { width: 100%; min-width: 150px; padding: 5px 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-secondary); font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 300; outline: none; resize: none; line-height: 1.5; box-sizing: border-box; transition: border-color var(--transition), background var(--transition); }
+    .admin-note-input:hover { border-color: var(--border); background: var(--dark-mid); }
+    .admin-note-input:focus { border-color: var(--gold); background: var(--dark-mid); }
+    /* â”€â”€ Admin Filters â”€â”€ */
+    .admin-filter-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 14px 0 4px; border-top: 1px solid var(--border); margin-top: 4px; }
+    .admin-filter-label { font-size: 10px; color: var(--text-muted); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+    .admin-filter-select { height: 34px; padding: 0 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: 'Jost', sans-serif; font-size: 12px; color: var(--text-primary); background: var(--dark-mid); outline: none; letter-spacing: .02em; transition: border-color var(--transition); cursor: pointer; }
+    .admin-filter-select:focus { border-color: var(--gold); }
+    .admin-filter-date { height: 34px; padding: 0 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: 'Jost', sans-serif; font-size: 12px; color: var(--text-primary); background: var(--dark-mid); outline: none; transition: border-color var(--transition); color-scheme: dark; }
+    .admin-filter-date:focus { border-color: var(--gold); }
+    .admin-filter-clear { font-size: 11px; color: var(--text-muted); letter-spacing: .04em; background: none; border: none; cursor: pointer; text-decoration: underline; transition: color var(--transition); padding: 0; margin-left: 4px; }
+    .admin-filter-clear:hover { color: var(--gold-light); }
+    /* â”€â”€ Vendor Breakdown â”€â”€ */
+    /* ── Vendor Management (Admin) ── */
+    .vendor-mgmt-section { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .vendor-mgmt-title { font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+    .vendor-toggle-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .vendor-toggle-card { display: flex; align-items: center; gap: 16px; padding: 14px 22px; background: var(--dark); border: 1px solid var(--border); border-radius: var(--radius-sm); transition: border-color var(--transition), background var(--transition); }
+    .vendor-toggle-card.active { border-color: var(--border-gold); background: rgba(184,148,42,.04); }
+    .vendor-toggle-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 400; color: var(--text-primary); letter-spacing: .04em; min-width: 76px; }
+    .vendor-toggle-status { font-size: 10px; letter-spacing: .1em; font-weight: 600; text-transform: uppercase; }
+    .vendor-toggle-card.active .vendor-toggle-status { color: var(--gold-light); }
+    .vendor-toggle-card:not(.active) .vendor-toggle-status { color: var(--text-muted); }
+    .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle-slider { position: absolute; cursor: pointer; inset: 0; background: var(--dark-mid); border: 1px solid var(--border); border-radius: 24px; transition: all var(--transition); }
+    .toggle-slider::before { content: ''; position: absolute; height: 16px; width: 16px; left: 3px; top: 3px; background: var(--text-muted); border-radius: 50%; transition: all var(--transition); }
+    .toggle-switch input:checked + .toggle-slider { background: rgba(184,148,42,.15); border-color: var(--gold); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); background: var(--gold); }
+    .vendor-breakdown { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+    .vendor-stat { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); letter-spacing: .04em; padding: 6px 14px; background: var(--dark); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+    .vendor-stat .vendor-label { color: var(--text-secondary); }
+    .vendor-stat strong { color: var(--white); font-weight: 600; }
+    .ship-to-group { display: flex; flex-wrap: wrap; gap: 10px; padding: 4px 0; }
+    .ship-to-option { display: inline-flex; align-items: center; gap: 9px; cursor: pointer; padding: 8px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--dark-mid); transition: border-color var(--transition), background var(--transition); user-select: none; }
+    .ship-to-option:hover { border-color: var(--border-gold); }
+    .ship-to-option input[type="checkbox"] { display: none; }
+    .ship-to-check { width: 16px; height: 16px; border: 1px solid var(--border); border-radius: 3px; background: var(--dark); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all var(--transition); }
+    .ship-to-check::after { content: ''; display: block; width: 5px; height: 9px; border: 2px solid var(--black); border-top: none; border-left: none; transform: rotate(45deg) translateY(-1px); opacity: 0; transition: opacity var(--transition); }
+    .ship-to-option input[type="checkbox"]:checked ~ .ship-to-check { background: var(--gold); border-color: var(--gold); }
+    .ship-to-option input[type="checkbox"]:checked ~ .ship-to-check::after { opacity: 1; }
+    .ship-to-option input[type="checkbox"]:checked ~ .ship-to-text { color: var(--white); }
+    .ship-to-text { font-size: 13.5px; color: var(--text-secondary); font-weight: 400; letter-spacing: .02em; transition: color var(--transition); }
+        /* â”€â”€ Password Gate â”€â”€ */
+    .pw-gate { position: fixed; inset: 0; background: rgba(0,0,0,.88); backdrop-filter: blur(8px); z-index: 1000; display: flex; align-items: center; justify-content: center; }
+    .pw-gate.hidden { display: none; }
+    .pw-card { background: var(--dark-card); border: 1px solid var(--border-gold); border-radius: var(--radius); padding: 52px 44px 44px; width: 100%; max-width: 380px; text-align: center; }
+    .pw-card h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--text-primary); margin-bottom: 8px; letter-spacing: .04em; }
+    .pw-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; font-weight: 300; line-height: 1.6; }
+    .pw-input { width: 100%; height: 44px; padding: 0 16px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--dark-mid); color: var(--text-primary); font-family: 'Jost', sans-serif; font-size: 15px; letter-spacing: .1em; outline: none; box-sizing: border-box; transition: border-color var(--transition); margin-bottom: 12px; }
+    .pw-input:focus { border-color: var(--gold); }
+    .pw-input.shake { animation: pwShake .4s ease; }
+    .pw-error { font-size: 12px; color: var(--error); margin-bottom: 14px; min-height: 16px; letter-spacing: .02em; }
+    .pw-btn { width: 100%; height: 44px; background: var(--gold); color: var(--black); border: none; border-radius: var(--radius-sm); font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: background var(--transition); }
+    .pw-btn:hover { background: var(--gold-light); }
+    @keyframes pwShake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(.88); } to { opacity: 1; transform: scale(1); } }
+    @media (max-width: 640px) {
+      .top-banner { padding: 0 18px; }
+      .page-wrap { padding: 32px 18px 72px; }
+      .admin-wrap { padding: 32px 18px 72px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field-full { grid-column: 1; }
+      .card-body { padding: 20px; }
+      .card-header { padding: 16px 20px; }
+      .form-actions { flex-direction: column; }
+      .actions-right, .actions-left { width: 100%; }
+      .btn { justify-content: center; }
+      .product-table { font-size: 12px; }
+      .admin-search { width: 100%; }
+      .admin-toolbar { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BANNER -->
+<header class="top-banner">
+  <div class="banner-logo">
+    <img src="data:image/png;base64,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hD5cW19SUf/E3/596GtNq663w9QAAJU1jSdhe1rTKbPZ8vWVisb23ra37cu0U9V1zT8BoOlLHZvXzIrpy/VERERERH3BkOMa4np5nam4rO63/9pxbKfBZOpTwAGAPcfzrgG41MVp/dGMS1/1pb02nd785vZDH1XVNr/Tl/s85NK+PLUiIiIiIuoThhzX0Jv5OLor5XV//euHh17VtOra+tmPAcC3XZzLzSuq7NVQtY7qmrQtr39w8EUAu2Fbda03/PvaDxERERFRbzHkOFl4sLd3eLBPTyurWYrL6j7+56fHf2M0mkz97ctoNptPZxWfAWAfkqxFpTXptQ1tpf1pV6vTa05nFf8MQF4vbwnpTz9ERERERL3BkONkwf7qED+1qrsnG2ar1fpNZv7VH2padfUD6ctqtaKgpCoTQIndKcO1uuavNK26LufrdMdsseDf36SfO3i64Bn0bn4ONwMlIiIiokHDkON8AQB8ujl/5sCpgv86lH6pT5P7u1JSXnelskZz0+ahJpO5+mTW5cMDaddisVi/PJh16HRW8SsAelq8IGogfRERERERdYchx/mCAfh1dsJqtV74/MD5e748lNXVYgF9Vq/R6huaW3d0OGQxmy3vX61sbB1o22aLxXQ6p/jPbTr9ez1cKhloX0REREREXWHIcSKxSCTMTh0dA0DVyenLB04V/PeBUwVXrVar1ZH9Hjt76RsAWdf/mn8k49J2R7VdeLW2+b0v034FILuby8Ic1R8RERERkT2xRCx2dg0jlkQkktx7x/QHAEzpeNxqtV774mDm43uO5+4F4NCAAwC1ja26q5V1+70UHhnHzhX+ae+J/AJHtl/X2NrS3KrLThodPgedrKRmNJmF/Wn5/+vIPomIiIiIbuCwIecSYBuu1lHzgVMFvzxwqmDPYHacV1R9Oa+o+vJgtG21wppfVJVWVat5OTRQ/Q8Aso7nZVKJMGl8pOe5/LIBD5EjIiIiIrLH4WrOJQIQ2eHvLU0t2ufTc4q3OqsgR6nXaC2vvLv/o6pazV9gtxCBRCwSj44ODnVSaURERETk5hhynMsMoPD6/7eZzJY//XPH0Tcra5v1zizKUbTtBv2b2w//uapWc6iT0/zaIyIiIqJBweFqTmQ0m01/+/Dg7xdNHV9ScKXqwIlzRUf0A9js0xXVa7Q1Fy6VPxoaqP4WQAJsQ/Ss6HmZaSIiIiKifhE8ZFJn10BuTiwSCZtWTJ09IyX2TQAJBqMp75V3900sq25yq0BHRERERK6Bq6vRoLNarbhwubJMJBI+0RtMOdW1mleOnC2scXZdREREROSe+CSHiIiIiIjcCid/ExERERGRW2HIISIiIiIit8KQQ0REREREboUhh4iIiIiI3ApDDhERERERuRWGHCIiIiIicisMOURERERE5FYYcoiIiIiIyK0w5BARERERkVsC+JpvAAAA60lEQVRhyCEiIiIiIrfCkENERERERG6FIYeIiIiIiNwKQw4REREREbkVhhwiIiIiInIrDDlERERERORWGHKIiIiIiMitMOQQEREREZFbYcghIiIiIiK3wpBDRERERERuhSGHiIiIiIjcCkMOERERERG5FYYcIiIiIiJyKww5RERERETkVhhyiIiIiIjIrTDkEBERERGRW2HIISIiIiIit8KQQ0REREREboUhh4iIiIiI3ApDDhERERERuRWGHCIiIiIicisMOURERERE5FYYcoiIiIiIyK0w5BARERERkVthyCEiIiIiIrfy/wEkG/au3lxrPgAAAABJRU5ErkJggg==" alt="Illuminate" style="height:38px;width:auto;display:block;" /></div>
+  <nav class="banner-nav">
+    <button class="nav-btn active" id="navOrder" onclick="showView('order')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Order Form
+    </button>
+    <button class="nav-btn" id="navAdmin" onclick="showView('admin')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Admin Portal
+    </button>
+  </nav>
+</header>
+
+<!-- ════════════ ORDER FORM VIEW ════════════ -->
+<main class="page-wrap" id="viewOrder">
+  <div class="page-header">
+    <h1>Employee Skincare Order Form</h1>
+    <div class="page-header-rule"></div>
+    <p>The vendors listed below offer an approved staff ordering program through Illuminate. Eligibility may vary, as vendor participation depends on their individual program rules. To participate, you must also be in good standing with Illuminate, which means you have been employed for at least six months, are actively working (not on leave), and are not currently on a performance improvement plan.</p>
+    <div id="submitDeadline" class="submit-deadline" style="display:none;">Must Submit By: <span class="submit-deadline-date" id="submitDeadlineDate"></span></div>
+  </div>
+  <form id="orderForm" novalidate>
+    <!-- REQUESTER DETAILS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div><div class="card-title">Requester Details</div><div class="card-subtitle">Your information for order processing</div></div>
+      </div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Full Name <span class="required">*</span></label>
+            <div class="field-wrap">
+              <span class="field-prefix"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+              <input type="text" id="requesterName" class="field-input" placeholder="Your full name" required/>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Email Address <span class="required">*</span></label>
+            <div class="field-wrap">
+              <span class="field-prefix"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+              <input type="email" id="requesterEmail" class="field-input" placeholder="Your email address" required/>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label" for="phone">Phone / Extension</label>
+            <div class="field-wrap">
+              <span class="field-prefix"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 0111.6 19a19.5 19.5 0 01-6-6 19.79 19.79 0 01-2.93-8.24A2 2 0 014.61 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+              <input type="tel" id="phone" class="field-input" placeholder="+1 (555) 000-0000"/>
+            </div>
+          </div>
+          <div class="field field-full">
+            <label class="field-label">Ship To Location <span class="required">*</span></label>
+            <div class="ship-to-group">
+              <label class="ship-to-option"><input type="checkbox" name="shipTo" value="San Jose 206" class="ship-to-cb"/><span class="ship-to-check"></span><span class="ship-to-text">San Jose 206</span></label>
+              <label class="ship-to-option"><input type="checkbox" name="shipTo" value="San Jose Skin" class="ship-to-cb"/><span class="ship-to-check"></span><span class="ship-to-text">San Jose Skin</span></label>
+              <label class="ship-to-option"><input type="checkbox" name="shipTo" value="Palo Alto" class="ship-to-cb"/><span class="ship-to-check"></span><span class="ship-to-text">Palo Alto</span></label>
+              <label class="ship-to-option"><input type="checkbox" name="shipTo" value="Morgan Hill" class="ship-to-cb"/><span class="ship-to-check"></span><span class="ship-to-text">Morgan Hill</span></label>
+              <label class="ship-to-option"><input type="checkbox" name="shipTo" value="InHands" class="ship-to-cb"/><span class="ship-to-check"></span><span class="ship-to-text">InHands</span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT SELECTION -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+        <div><div class="card-title">Product Selection</div><div class="card-subtitle">Choose products and quantities from each vendor</div></div>
+      </div>
+      <div class="card-body">
+        <!-- ALASTIN -->
+        <div class="vendor-section" id="vendor-section-Alastin">
+          <div class="vendor-label"><span class="vendor-name">Alastin</span><div class="vendor-line"></div></div>
+          <p class="vendor-notice">IPS must meet a quarterly purchasing requirement with Alastin to maintain eligibility for staff orders. We cannot guarantee this order will be placed.</p>
+          <table class="product-table" id="table-alastin">
+            <thead><tr><th>Product</th><th>Price</th><th>Qty</th></tr></thead>
+            <tbody>
+              <tr data-vendor="Alastin" data-product="Regenerating Skin Nectar with TriHex Technology" data-price="82.60"><td class="product-name">Regenerating Skin Nectar, with TriHex Technology <span class="prod-size">1 oz.</span></td><td>$82.60</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Alastin" data-product="Restorative Skin Complex with TriHex+" data-price="83.65"><td class="product-name">Restorative Skin Complex, with TriHex+ <span class="prod-size">1 oz.</span></td><td>$83.65</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Alastin" data-product="C-Radical Defense Antioxidant Serum" data-price="69.65"><td class="product-name">C-Radical Defense Antioxidant Serum <span class="prod-size">1 oz.</span></td><td>$69.65</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Alastin" data-product="A-Luminate Brightening Serum" data-price="63.70"><td class="product-name">A-Luminate Brightening Serum <span class="prod-size">1.7 oz.</span></td><td>$63.70</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Alastin" data-product="Restorative Eye Treatment with TriHex Technology" data-price="41.30"><td class="product-name">Restorative Eye Treatment, with TriHex Technology <span class="prod-size">.5 oz.</span></td><td>$41.30</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Alastin" data-product="Restorative Neck Complex with TriHex Technology" data-price="51.10"><td class="product-name">Restorative Neck Complex, with TriHex Technology <span class="prod-size">1.7 oz.</span></td><td>$51.10</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Alastin" data-product="TransFORM Body Treatment with TriHex Technology" data-price="63.00"><td class="product-name">TransFORM Body Treatment, with TriHex Technology <span class="prod-size">6 oz.</span></td><td>$63.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Alastin" data-product="ReFORM and RePAIR Complex" data-price="85.40"><td class="product-name">ReFORM &amp; RePAIR Complex <span class="prod-size">5 oz.</span></td><td>$85.40</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Alastin" data-product="Inhance Post-Injection Serum with TriHex Technology" data-price="23.10"><td class="product-name">Inhance Post-Injection Serum, with TriHex Technology <span class="prod-size">.33 oz.</span></td><td>$23.10</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="divider-gold"></div>
+        <!-- PLATED -->
+        <div class="vendor-section" id="vendor-section-Plated">
+          <div class="vendor-label"><span class="vendor-name">Plated</span><div class="vendor-line"></div></div>
+          <p class="vendor-notice">Important: IPS must meet a quarterly purchasing requirement with Plated to maintain eligibility for staff orders. We cannot guarantee this order will be placed. &nbsp;|&nbsp; Min order: 5 units total (pooled across all staff) &nbsp;|&nbsp; Max order: 24 units total (pooled across all staff) &nbsp;|&nbsp; Eligible products: Only products currently offered at IPS locations</p>
+          <table class="product-table" id="table-plated">
+            <thead><tr><th>Product</th><th>Price</th><th>Qty</th></tr></thead>
+            <tbody>
+              <tr data-vendor="Plated" data-product="plated Skin Science DAILY 30ml" data-price="103.20"><td class="product-name">( plated ) Skin Science DAILY <span class="prod-size">30ml</span></td><td>$103.20</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Plated" data-product="plated Skin Science DAILY REFILL 30ml" data-price="97.60"><td class="product-name">( plated ) Skin Science DAILY REFILL <span class="prod-size">30ml</span></td><td>$97.60</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Plated" data-product="plated Skin Science INTENSE 15ml" data-price="103.20"><td class="product-name">( plated ) Skin Science INTENSE <span class="prod-size">15ml</span></td><td>$103.20</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Plated" data-product="plated Skin Science INTENSE REFILL 15ml" data-price="97.60"><td class="product-name">( plated ) Skin Science INTENSE REFILL <span class="prod-size">15ml</span></td><td>$97.60</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Plated" data-product="plated Skin Science CALM 15ml" data-price="103.20"><td class="product-name">( plated ) Skin Science CALM <span class="prod-size">15ml</span></td><td>$103.20</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Plated" data-product="plated Skin Science HAIR Serum 30ml" data-price="183.20"><td class="product-name">( plated ) Skin Science HAIR Serum <span class="prod-size">30ml</span></td><td>$183.20</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Plated" data-product="plated Skin Science EYE Serum 8ml" data-price="55.20"><td class="product-name">( plated ) Skin Science EYE Serum <span class="prod-size">8ml</span></td><td>$55.20</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="divider-gold"></div>
+        <!-- EPICUTIS -->
+        <div class="vendor-section" id="vendor-section-Epicutis">
+          <div class="vendor-label"><span class="vendor-name">Epicutis</span><div class="vendor-line"></div></div>
+          <p class="vendor-notice">Available to order quarterly with no restrictions or minimum orders.</p>
+          <table class="product-table" id="table-epicutis">
+            <thead><tr><th>Product</th><th>Price</th><th>Qty</th></tr></thead>
+            <tbody>
+              <tr data-vendor="Epicutis" data-product="Luxury Skincare Sets" data-price="100.00"><td class="product-name">Luxury Skincare Sets</td><td>$100.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Cleansing Essential Sets" data-price="52.00"><td class="product-name">Cleansing Essential Sets</td><td>$52.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Oil Cleanser" data-price="42.00"><td class="product-name">Oil Cleanser</td><td>$42.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Serum" data-price="125.00"><td class="product-name">Lipid Serum</td><td>$125.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Hyvia Creme" data-price="85.00"><td class="product-name">Hyvia Creme</td><td>$85.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Arctigenin Brightening Treatment" data-price="85.00"><td class="product-name">Arctigenin Brightening Treatment</td><td>$85.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Hydrobiome Mist" data-price="37.50"><td class="product-name">Hydrobiome Mist</td><td>$37.50</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Shield SPF 30" data-price="45.00"><td class="product-name">Lipid Shield SPF 30</td><td>$45.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Recovery Mask Face Box of 5" data-price="55.00"><td class="product-name">Lipid Recovery Mask – Face <span class="prod-size">Box of 5</span></td><td>$55.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Recovery Mask Neck Box of 5" data-price="65.00"><td class="product-name">Lipid Recovery Mask – Neck <span class="prod-size">Box of 5</span></td><td>$65.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Recovery Mask Eyes Box of 5" data-price="50.00"><td class="product-name">Lipid Recovery Mask – Eyes <span class="prod-size">Box of 5</span></td><td>$50.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Body Treatment" data-price="105.00"><td class="product-name">Lipid Body Treatment</td><td>$105.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Post-Procedure Set" data-price="26.00"><td class="product-name">Post-Procedure Set</td><td>$26.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Oil Cleanser 16oz" data-price="100.00"><td class="product-name">Backbar Oil Cleanser <span class="prod-size">16 oz.</span></td><td>$100.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Enzyme Powder 1.1oz" data-price="45.00"><td class="product-name">Backbar Enzyme Powder <span class="prod-size">1.1 oz.</span></td><td>$45.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Lipid Serum" data-price="145.00"><td class="product-name">Backbar Lipid Serum</td><td>$145.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Hyvia Creme" data-price="120.00"><td class="product-name">Backbar Hyvia Creme</td><td>$120.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Arctigenin Brightening Treatment" data-price="120.00"><td class="product-name">Backbar Arctigenin Brightening Treatment</td><td>$120.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Hydrobiome Mist 3 Bottles" data-price="90.00"><td class="product-name">Backbar Hydrobiome Mist <span class="prod-size">3 Bottles</span></td><td>$90.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Lipid Recovery Masks Face 10 Masks" data-price="90.00"><td class="product-name">Backbar Lipid Recovery Masks – Face <span class="prod-size">10 Masks</span></td><td>$90.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Lipid Recovery Masks Neck 10 Masks" data-price="100.00"><td class="product-name">Backbar Lipid Recovery Masks – Neck <span class="prod-size">10 Masks</span></td><td>$100.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Lipid Recovery Masks Eyes 10 Masks" data-price="80.00"><td class="product-name">Backbar Lipid Recovery Masks – Eyes <span class="prod-size">10 Masks</span></td><td>$80.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Backbar Lipid Body Treatment 16oz" data-price="175.00"><td class="product-name">Backbar Lipid Body Treatment <span class="prod-size">16 oz.</span></td><td>$175.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Ice Globes" data-price="100.00"><td class="product-name">Ice Globes</td><td>$100.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="divider"></div>
+        <!-- ORDER SUMMARY -->
+        <div class="order-summary">
+          <div class="summary-title">Order Summary</div>
+          <div class="summary-lines" id="summaryLines">
+            <div class="summary-line summary-zero">No products selected yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ACTIONS -->
+    <div class="form-actions">
+      <div class="actions-left">
+        <button type="button" class="btn btn-ghost" onclick="clearForm()">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 100 .49-.5"/></svg>
+          Clear
+        </button>
+      </div>
+      <div class="actions-right">
+        <button type="submit" class="btn btn-primary">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Submit Order
+        </button>
+      </div>
+    </div>
+    <p class="vendor-notice" style="margin-top:14px;">Sales tax will be added to your total. By submitting this order, you approve of Illuminate charging your card on file the amount shown plus sales tax.</p>
+  </form>
+</main>
+
+<!-- ════════════ ADMIN PORTAL VIEW ════════════ -->
+<div class="admin-wrap" id="viewAdmin">
+  <div class="page-header">
+    <h1>Admin Portal</h1>
+    <div class="page-header-rule"></div>
+    <p>Review, search, and export all submitted employee skincare orders.</p>
+  </div>
+  <!-- MUST SUBMIT BY -->
+  <div class="admin-deadline-row">
+    <span class="admin-deadline-label">Must Submit By</span>
+    <input type="date" class="admin-deadline-input" id="adminDeadlineInput" onchange="saveDeadline(this.value)" />
+    <button class="admin-deadline-clear" onclick="clearDeadline()">Clear</button>
+  </div>
+  <!-- MANUFACTURER VISIBILITY -->
+  <div class="vendor-mgmt-section">
+    <div class="vendor-mgmt-title">Manufacturer Visibility</div>
+    <div class="vendor-toggle-row">
+      <div class="vendor-toggle-card active" id="vtc-Alastin">
+        <label class="toggle-switch">
+          <input type="checkbox" id="vt-Alastin" checked onchange="toggleVendor('Alastin', this.checked)" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="vendor-toggle-name">Alastin</span>
+        <span class="vendor-toggle-status" id="vts-Alastin">Visible</span>
+      </div>
+      <div class="vendor-toggle-card active" id="vtc-Plated">
+        <label class="toggle-switch">
+          <input type="checkbox" id="vt-Plated" checked onchange="toggleVendor('Plated', this.checked)" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="vendor-toggle-name">Plated</span>
+        <span class="vendor-toggle-status" id="vts-Plated">Visible</span>
+      </div>
+      <div class="vendor-toggle-card active" id="vtc-Epicutis">
+        <label class="toggle-switch">
+          <input type="checkbox" id="vt-Epicutis" checked onchange="toggleVendor('Epicutis', this.checked)" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="vendor-toggle-name">Epicutis</span>
+        <span class="vendor-toggle-status" id="vts-Epicutis">Visible</span>
+      </div>
+    </div>
+  </div>
+  <div class="admin-toolbar">
+    <div class="admin-toolbar-left">
+      <input type="text" class="admin-search" id="adminSearch" placeholder="Search orders by name, email, product..." oninput="renderAdmin()"/>
+      <div class="admin-stat" id="adminStatCount">Orders: <strong>0</strong></div>
+      <div class="admin-stat" id="adminStatTotal">Revenue: <strong>$0.00</strong></div>
+    </div>
+    <div class="admin-toolbar-right">
+      <button class="btn btn-ghost" onclick="exportCSV()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export CSV
+      </button>
+      <button class="btn btn-danger" onclick="clearAllOrders()">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+        Clear All
+      </button>
+    </div>
+    <div class="admin-filter-row">
+      <span class="admin-filter-label">Location:</span>
+      <select class="admin-filter-select" id="filterLocation" onchange="renderAdmin()">
+        <option value="">All Locations</option>
+        <option value="San Jose 206">San Jose 206</option>
+        <option value="San Jose Skin">San Jose Skin</option>
+        <option value="Palo Alto">Palo Alto</option>
+        <option value="Morgan Hill">Morgan Hill</option>
+        <option value="InHands">InHands</option>
+      </select>
+      <span class="admin-filter-label">From:</span>
+      <input type="date" class="admin-filter-date" id="filterDateFrom" onchange="renderAdmin()" />
+      <span class="admin-filter-label">To:</span>
+      <input type="date" class="admin-filter-date" id="filterDateTo" onchange="renderAdmin()" />
+      <button class="admin-filter-clear" onclick="clearAdminFilters()">Clear filters</button>
+    </div>
+  </div>
+  <div class="vendor-breakdown" id="vendorBreakdown" style="display:none;"></div>
+  <div class="admin-table-wrap">
+    <table class="admin-table" id="adminTable">
+      <thead>
+        <tr>
+          <th onclick="sortAdmin('id')">ID <span class="sort-arrow">&#9650;</span></th>
+          <th onclick="sortAdmin('date')">Date <span class="sort-arrow">&#9650;</span></th>
+          <th onclick="sortAdmin('name')">Name <span class="sort-arrow">&#9650;</span></th>
+          <th onclick="sortAdmin('email')">Email <span class="sort-arrow">&#9650;</span></th>
+          <th>Phone</th>
+          <th onclick="sortAdmin('total')">Total <span class="sort-arrow">&#9650;</span></th>
+          <th>Items</th>
+          <th>Ship To</th>
+          <th onclick="sortAdmin('status')">Status <span class="sort-arrow">&#9650;</span></th>
+          <th>Admin Notes</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="adminBody"></tbody>
+    </table>
+  </div>
+  <div class="admin-empty" id="adminEmpty" style="display:none;">
+    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+    <h3>No Orders Yet</h3>
+    <p>Submitted orders will appear here automatically.</p>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="modal-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h2>Order Submitted</h2>
+    <div class="modal-rule"></div>
+    <p>Your skincare order has been received. The order will be placed with the manufacturer when/if we meet their minimum order criteria. Please contact Mason on Teams with any questions.</p>
+    <div id="modalOrderDetails"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      <button class="btn btn-primary" onclick="newOrder()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Order
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════ STORAGE HELPERS ═══════════════ */
+function getOrders() {
+  try { return JSON.parse(localStorage.getItem('illuminate_orders') || '[]'); }
+  catch(e) { return []; }
+}
+function saveOrders(orders) {
+  localStorage.setItem('illuminate_orders', JSON.stringify(orders));
+}
+function nextOrderId() {
+  var orders = getOrders();
+  if (orders.length === 0) return 1;
+  var max = 0;
+  for (var i = 0; i < orders.length; i++) { if (orders[i].id > max) max = orders[i].id; }
+  return max + 1;
+}
+
+/* ═══════════════ VIEW SWITCHING ═══════════════ */
+function showView(view) {
+  document.getElementById('viewOrder').style.display = view === 'order' ? '' : 'none';
+  var adminEl = document.getElementById('viewAdmin');
+  if (view === 'admin') {
+    if (sessionStorage.getItem('adminAuth') === '1') {
+      adminEl.classList.add('visible'); renderAdmin();
+    } else {
+      var gate = document.getElementById('pwGate');
+      gate.classList.remove('hidden');
+      document.getElementById('pwInput').value = '';
+      document.getElementById('pwError').innerHTML = '&nbsp;';
+      setTimeout(function(){ document.getElementById('pwInput').focus(); }, 50);
+    }
+  }
+  else { adminEl.classList.remove('visible'); }
+  document.getElementById('navOrder').classList.toggle('active', view === 'order');
+  document.getElementById('navAdmin').classList.toggle('active', view === 'admin');
+  window.scrollTo(0,0);
+}
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• ADMIN PASSWORD GATE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+var ADMIN_HASH = '4d38a7867394bed9f79bb18de1544487995a083bad316ff2a32ce342b4f0a12c';
+function checkAdminPw() {
+  var val = document.getElementById('pwInput').value;
+  crypto.subtle.digest('SHA-256', new TextEncoder().encode(val)).then(function(buf) {
+    var hex = Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+    if (hex === ADMIN_HASH) {
+      sessionStorage.setItem('adminAuth', '1');
+      document.getElementById('pwGate').classList.add('hidden');
+      showView('admin');
+    } else {
+      var inp = document.getElementById('pwInput');
+      inp.classList.add('shake');
+      document.getElementById('pwError').textContent = 'Incorrect password. Please try again.';
+      setTimeout(function(){ inp.classList.remove('shake'); }, 450);
+      inp.value = '';
+      inp.focus();
+    }
+  });
+}
+
+/* ═══════════════ ORDER FORM SUMMARY ═══════════════ */
+function updateSummary() {
+  var rows = document.querySelectorAll("tr[data-product]");
+  var lines = [], total = 0;
+  for (var i = 0; i < rows.length; i++) {
+    var input = rows[i].querySelector(".qty-input");
+    if (!input) continue;
+    var qty = parseInt(input.value) || 0;
+    if (qty > 0) {
+      var product = rows[i].getAttribute("data-product");
+      var price = parseFloat(rows[i].getAttribute("data-price"));
+      var subtotal = qty * price;
+      total += subtotal;
+      lines.push({ p: product, q: qty, s: subtotal });
+    }
+  }
+  var container = document.getElementById("summaryLines");
+  if (!container) return;
+  if (lines.length === 0) { container.innerHTML = '<div class="summary-line summary-zero">No products selected yet</div>'; return; }
+  var html = "";
+  for (var j = 0; j < lines.length; j++) {
+    html += '<div class="summary-line"><span>' + lines[j].q + ' &times; ' + lines[j].p + '</span><span>$' + lines[j].s.toFixed(2) + '</span></div>';
+  }
+  html += '<div class="summary-line summary-total"><span>Order Total</span><span>$' + total.toFixed(2) + '</span></div>';
+  container.innerHTML = html;
+}
+
+/* ═══════════════ SUBMIT ORDER ═══════════════ */
+document.getElementById("orderForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  var nameVal = document.getElementById("requesterName").value.trim();
+  var emailVal = document.getElementById("requesterEmail").value.trim();
+  if (!nameVal) { alert("Please enter your full name."); return; }
+  if (!emailVal || emailVal.indexOf("@") === -1) { alert("Please enter a valid email address."); return; }
+
+  var rows = document.querySelectorAll("tr[data-product]");
+  var orderItems = [];
+  for (var i = 0; i < rows.length; i++) {
+    var input = rows[i].querySelector(".qty-input");
+    if (!input) continue;
+    var qty = parseInt(input.value) || 0;
+    if (qty > 0) {
+      orderItems.push({
+        vendor: rows[i].getAttribute("data-vendor"),
+        product: rows[i].getAttribute("data-product"),
+        price: parseFloat(rows[i].getAttribute("data-price")),
+        quantity: qty,
+        subtotal: qty * parseFloat(rows[i].getAttribute("data-price"))
+      });
+    }
+  }
+  if (orderItems.length === 0) { alert("Please select at least one product."); return; }
+
+  var orderTotal = 0;
+  for (var k = 0; k < orderItems.length; k++) { orderTotal += orderItems[k].subtotal; }
+
+  // Collect Ship To Location
+  var shipToCbs = document.querySelectorAll(".ship-to-cb:checked");
+  var shipToVals = [];
+  for (var s = 0; s < shipToCbs.length; s++) { shipToVals.push(shipToCbs[s].value); }
+  if (shipToVals.length === 0) { alert("Please select a Ship To Location."); return; }
+
+  // Save to localStorage
+  var order = {
+    id: nextOrderId(),
+    date: new Date().toISOString(),
+    name: nameVal,
+    email: emailVal,
+    phone: document.getElementById("phone").value || "",
+    shipTo: shipToVals.join(", "),
+    items: orderItems,
+    total: orderTotal
+  };
+  var orders = getOrders();
+  orders.push(order);
+  saveOrders(orders);
+
+  // Build order detail table for confirmation modal
+  var detailHtml = '<table class="modal-order-table"><thead><tr><th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead><tbody>';
+  for (var m = 0; m < orderItems.length; m++) {
+    var it = orderItems[m];
+    detailHtml += '<tr><td>' + escapeHtml(it.product) + '</td><td>' + it.quantity + '</td><td>$' + it.price.toFixed(2) + '</td><td>$' + it.subtotal.toFixed(2) + '</td></tr>';
+  }
+  detailHtml += '</tbody></table>';
+  detailHtml += '<div class="modal-order-total"><span>Order Total</span><span>$' + orderTotal.toFixed(2) + '</span></div>';
+  document.getElementById("modalOrderDetails").innerHTML = detailHtml;
+
+  document.getElementById("successModal").classList.add("open");
+});
+
+/* ═══════════════ FORM HELPERS ═══════════════ */
+function clearForm() {
+  if (!confirm("Clear all selections?")) return;
+  var inputs = document.querySelectorAll(".qty-input");
+  for (var i = 0; i < inputs.length; i++) { inputs[i].value = 0; }
+  document.getElementById("requesterName").value = "";
+  document.getElementById("requesterEmail").value = "";
+  document.getElementById("phone").value = "";
+  var cbs = document.querySelectorAll(".ship-to-cb");
+  for (var i = 0; i < cbs.length; i++) { cbs[i].checked = false; }
+  updateSummary();
+}
+function closeModal() { document.getElementById("successModal").classList.remove("open"); }
+function newOrder() { closeModal(); clearForm(); }
+
+function escapeHtml(s) {
+  var d = document.createElement('div'); d.textContent = s; return d.innerHTML;
+}
+
+/* ═══════════════ ADMIN PORTAL ═══════════════ */
+var adminSortKey = 'date';
+var adminSortAsc = false;
+
+function sortAdmin(key) {
+  if (adminSortKey === key) { adminSortAsc = !adminSortAsc; }
+  else { adminSortKey = key; adminSortAsc = true; }
+  renderAdmin();
+}
+
+var adminFilteredOrders = [];
+
+function renderAdmin() {
+  var allOrders = getOrders();
+  var search = (document.getElementById('adminSearch').value || '').toLowerCase();
+  var locFilter = (document.getElementById('filterLocation') || {}).value || '';
+  var dateFrom = (document.getElementById('filterDateFrom') || {}).value || '';
+  var dateTo   = (document.getElementById('filterDateTo')   || {}).value || '';
+
+  // Filter
+  var filtered = allOrders.filter(function(o) {
+    if (search) {
+      var blob = (o.name + ' ' + o.email + ' ' + o.phone + ' ' + (o.shipTo || '') + ' ' + (o.status || '') + ' ' + (o.adminNotes || '')).toLowerCase();
+      for (var i = 0; i < o.items.length; i++) { blob += ' ' + o.items[i].product.toLowerCase() + ' ' + o.items[i].vendor.toLowerCase(); }
+      if (blob.indexOf(search) === -1) return false;
+    }
+    if (locFilter && (!o.shipTo || o.shipTo.indexOf(locFilter) === -1)) return false;
+    if (dateFrom && new Date(o.date) < new Date(dateFrom)) return false;
+    if (dateTo   && new Date(o.date) > new Date(dateTo + 'T23:59:59')) return false;
+    return true;
+  });
+
+  // Sort
+  filtered.sort(function(a, b) {
+    var va, vb;
+    if (adminSortKey === 'id')     { va = a.id; vb = b.id; }
+    else if (adminSortKey === 'date')   { va = a.date; vb = b.date; }
+    else if (adminSortKey === 'name')   { va = a.name.toLowerCase(); vb = b.name.toLowerCase(); }
+    else if (adminSortKey === 'email')  { va = a.email.toLowerCase(); vb = b.email.toLowerCase(); }
+    else if (adminSortKey === 'total')  { va = a.total; vb = b.total; }
+    else if (adminSortKey === 'status') { va = (a.status || 'Pending').toLowerCase(); vb = (b.status || 'Pending').toLowerCase(); }
+    else { va = a.id; vb = b.id; }
+    if (va < vb) return adminSortAsc ? -1 : 1;
+    if (va > vb) return adminSortAsc ? 1 : -1;
+    return 0;
+  });
+
+  adminFilteredOrders = filtered;
+
+  // Stats
+  var filteredTotal = 0;
+  for (var s = 0; s < filtered.length; s++) filteredTotal += filtered[s].total;
+  var countLabel = filtered.length !== allOrders.length ? filtered.length + ' of ' + allOrders.length : String(filtered.length);
+  document.getElementById('adminStatCount').innerHTML = 'Orders: <strong>' + countLabel + '</strong>';
+  document.getElementById('adminStatTotal').innerHTML = 'Revenue: <strong>$' + filteredTotal.toFixed(2) + '</strong>';
+
+  // Vendor breakdown
+  var vendors = {};
+  for (var vi = 0; vi < filtered.length; vi++) {
+    for (var vj = 0; vj < filtered[vi].items.length; vj++) {
+      var vn = filtered[vi].items[vj].vendor;
+      vendors[vn] = (vendors[vn] || 0) + filtered[vi].items[vj].subtotal;
+    }
+  }
+  var vbEl = document.getElementById('vendorBreakdown');
+  if (vbEl) {
+    var vKeys = Object.keys(vendors).sort();
+    if (vKeys.length > 0) {
+      var vbHtml = '';
+      for (var vk = 0; vk < vKeys.length; vk++) {
+        vbHtml += '<div class="vendor-stat"><span class="vendor-label">' + escapeHtml(vKeys[vk]) + '</span><strong>$' + vendors[vKeys[vk]].toFixed(2) + '</strong></div>';
+      }
+      vbEl.innerHTML = vbHtml;
+      vbEl.style.display = '';
+    } else {
+      vbEl.innerHTML = '';
+      vbEl.style.display = 'none';
+    }
+  }
+
+  // Header sort indicators
+  var ths = document.querySelectorAll('#adminTable thead th');
+  for (var t = 0; t < ths.length; t++) ths[t].classList.remove('sorted');
+
+  // Render table
+  var tbody = document.getElementById('adminBody');
+  var empty = document.getElementById('adminEmpty');
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    if (allOrders.length === 0) {
+      document.querySelector('.admin-table-wrap').style.display = 'none';
+      empty.style.display = '';
+    } else {
+      document.querySelector('.admin-table-wrap').style.display = '';
+      empty.style.display = 'none';
+      tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:40px;color:var(--text-muted);font-style:italic;">No orders match your filters.</td></tr>';
+    }
+    return;
+  }
+
+  empty.style.display = 'none';
+  document.querySelector('.admin-table-wrap').style.display = '';
+
+  var html = '';
+  for (var i = 0; i < filtered.length; i++) {
+    var o = filtered[i];
+    var d = new Date(o.date);
+    var dateStr = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    var itemsHtml = '';
+    for (var j = 0; j < o.items.length; j++) {
+      itemsHtml += '<span class="item-line">' + o.items[j].quantity + 'x ' + escapeHtml(o.items[j].product) + ' ($' + o.items[j].subtotal.toFixed(2) + ')</span>';
+    }
+    var status = o.status || 'Pending';
+    var statusCls = 'status-' + status.toLowerCase();
+    var noteVal = (o.adminNotes || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    html += '<tr>' +
+      '<td class="col-id">#' + o.id + '</td>' +
+      '<td class="col-date">' + dateStr + '</td>' +
+      '<td>' + escapeHtml(o.name) + '</td>' +
+      '<td>' + escapeHtml(o.email) + '</td>' +
+      '<td>' + escapeHtml(o.phone || '\u2014') + '</td>' +
+      '<td class="col-total">$' + o.total.toFixed(2) + '</td>' +
+      '<td class="col-items">' + itemsHtml + '</td>' +
+      '<td style="font-size:12px;color:var(--text-muted);max-width:140px;">' + escapeHtml(o.shipTo || '\u2014') + '</td>' +
+      '<td><select class="status-select ' + statusCls + '" onchange="updateOrder(' + o.id + ',\'status\',this.value);this.className=\'status-select status-\'+this.value.toLowerCase();">' +
+        '<option' + (status==='Pending'?' selected':'') + '>Pending</option>' +
+        '<option' + (status==='Ordered'?' selected':'') + '>Ordered</option>' +
+        '<option' + (status==='Received'?' selected':'') + '>Received</option>' +
+      '</select></td>' +
+      '<td><textarea class="admin-note-input" rows="2" placeholder="Add note..." onblur="updateOrder(' + o.id + ',\'adminNotes\',this.value)">' + noteVal + '</textarea></td>' +
+      '<td class="col-actions"><button title="Delete order" onclick="deleteOrder(' + o.id + ')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button></td>' +
+      '</tr>';
+  }
+  tbody.innerHTML = html;
+  updateVendorToggleUI();
+}
+
+
+function updateOrder(id, field, value) {
+  var orders = getOrders();
+  for (var i = 0; i < orders.length; i++) {
+    if (orders[i].id === id) { orders[i][field] = value; break; }
+  }
+  saveOrders(orders);
+}
+
+function clearAdminFilters() {
+  document.getElementById('adminSearch').value = '';
+  document.getElementById('filterLocation').value = '';
+  document.getElementById('filterDateFrom').value = '';
+  document.getElementById('filterDateTo').value = '';
+  renderAdmin();
+}
+
+function deleteOrder(id) {
+  if (!confirm('Delete order #' + id + '?')) return;
+  var orders = getOrders().filter(function(o) { return o.id !== id; });
+  saveOrders(orders);
+  renderAdmin();
+}
+
+function clearAllOrders() {
+  if (!confirm('Delete ALL orders? This cannot be undone.')) return;
+  saveOrders([]);
+  renderAdmin();
+}
+
+/* ═══════════════ CSV EXPORT ═══════════════ */
+function exportCSV() {
+  var toExport = adminFilteredOrders;
+  if (toExport.length === 0) {
+    alert(getOrders().length === 0 ? 'No orders to export.' : 'No orders match current filters.');
+    return;
+  }
+  var rows = [['Order ID','Date','Name','Email','Phone','Ship To Location','Status','Vendor','Product','Unit Price','Quantity','Subtotal','Order Total','Admin Notes']];
+  for (var i = 0; i < toExport.length; i++) {
+    var o = toExport[i];
+    var d = new Date(o.date);
+    var dateStr = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    for (var j = 0; j < o.items.length; j++) {
+      var it = o.items[j];
+      rows.push([
+        o.id,
+        dateStr,
+        '"' + o.name.replace(/"/g, '""') + '"',
+        '"' + o.email.replace(/"/g, '""') + '"',
+        '"' + (o.phone || '').replace(/"/g, '""') + '"',
+        '"' + (o.shipTo || '').replace(/"/g, '""') + '"',
+        '"' + (o.status || 'Pending').replace(/"/g, '""') + '"',
+        '"' + it.vendor.replace(/"/g, '""') + '"',
+        '"' + it.product.replace(/"/g, '""') + '"',
+        it.price.toFixed(2),
+        it.quantity,
+        it.subtotal.toFixed(2),
+        o.total.toFixed(2),
+        '"' + (o.adminNotes || '').replace(/"/g, '""') + '"'
+      ]);
+    }
+  }
+  var csv = '';
+  for (var r = 0; r < rows.length; r++) csv += rows[r].join(',') + '\n';
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'illuminate_orders_' + new Date().toISOString().slice(0,10) + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* ═══════════════ VENDOR VISIBILITY ═══════════════ */
+var VENDORS = ['Alastin', 'Plated', 'Epicutis'];
+
+function getVendorVisibility() {
+  try {
+    var stored = localStorage.getItem('vendorVisibility');
+    if (stored) return JSON.parse(stored);
+  } catch(e) {}
+  return { Alastin: true, Plated: true, Epicutis: true };
+}
+
+function saveVendorVisibility(vis) {
+  localStorage.setItem('vendorVisibility', JSON.stringify(vis));
+}
+
+function applyVendorVisibility() {
+  var vis = getVendorVisibility();
+  for (var i = 0; i < VENDORS.length; i++) {
+    var v = VENDORS[i];
+    var section = document.getElementById('vendor-section-' + v);
+    if (!section) continue;
+    var hiding = !vis[v];
+    section.style.display = hiding ? 'none' : '';
+    if (hiding) {
+      var inputs = section.querySelectorAll('.qty-input');
+      for (var j = 0; j < inputs.length; j++) inputs[j].value = 0;
+    }
+  }
+  updateSummary();
+  updateVendorToggleUI();
+}
+
+function updateVendorToggleUI() {
+  var vis = getVendorVisibility();
+  for (var i = 0; i < VENDORS.length; i++) {
+    var v = VENDORS[i];
+    var cb     = document.getElementById('vt-'  + v);
+    var card   = document.getElementById('vtc-' + v);
+    var status = document.getElementById('vts-' + v);
+    if (cb)     cb.checked = vis[v];
+    if (card)   card.classList.toggle('active', vis[v]);
+    if (status) status.textContent = vis[v] ? 'Visible' : 'Hidden';
+  }
+}
+
+function toggleVendor(vendorName, enabled) {
+  var vis = getVendorVisibility();
+  vis[vendorName] = enabled;
+  saveVendorVisibility(vis);
+  applyVendorVisibility();
+}
+
+/* ═══════════════ SUBMIT DEADLINE ═══════════════ */
+function saveDeadline(val) {
+  if (val) { localStorage.setItem('submitDeadline', val); }
+  else { localStorage.removeItem('submitDeadline'); }
+  updateDeadlineDisplay();
+}
+function clearDeadline() {
+  localStorage.removeItem('submitDeadline');
+  var inp = document.getElementById('adminDeadlineInput');
+  if (inp) inp.value = '';
+  updateDeadlineDisplay();
+}
+function updateDeadlineDisplay() {
+  var val = localStorage.getItem('submitDeadline');
+  var block = document.getElementById('submitDeadline');
+  var span = document.getElementById('submitDeadlineDate');
+  var inp = document.getElementById('adminDeadlineInput');
+  if (inp) inp.value = val || '';
+  if (val && block && span) {
+    var d = new Date(val + 'T00:00:00');
+    var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    span.textContent = months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+    block.style.display = '';
+  } else if (block) {
+    block.style.display = 'none';
+  }
+}
+
+/* ═══════════════ INIT ═══════════════ */
+window.addEventListener('DOMContentLoaded', function() {
+  var inputs = document.querySelectorAll('.qty-input');
+  for (var i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener('input', updateSummary);
+    inputs[i].addEventListener('change', updateSummary);
+  }
+  applyVendorVisibility();
+  updateDeadlineDisplay();
+});
+</script>
+<!-- PASSWORD GATE -->
+<div class="pw-gate hidden" id="pwGate">
+  <div class="pw-card">
+    <h2>Admin Portal</h2>
+    <p>This area is restricted.<br>Enter your password to continue.</p>
+    <input type="password" class="pw-input" id="pwInput" placeholder="Password" onkeydown="if(event.key==='Enter')checkAdminPw()" autocomplete="off" />
+    <div class="pw-error" id="pwError">&nbsp;</div>
+    <button class="pw-btn" onclick="checkAdminPw()">Unlock</button>
+  </div>
+</div>
+</body>
+</html>
