@@ -540,7 +540,7 @@
     </div>
   </div>
   <div class="vendor-breakdown" id="vendorBreakdown" style="display:none;"></div>
-  <div class="admin-table-wrap">
+  <div class="admin-table-wrap" id="adminTableWrap">
     <table class="admin-table" id="adminTable">
       <thead>
         <tr>
@@ -825,7 +825,7 @@ function renderAdmin() {
         vbHtml += '<div class="vendor-stat"><span class="vendor-label">' + escapeHtml(vKeys[vk]) + '</span><strong>$' + vendors[vKeys[vk]].toFixed(2) + '</strong></div>';
       }
       vbEl.innerHTML = vbHtml;
-      vbEl.style.display = '';
+      vbEl.style.display = 'flex';
     } else {
       vbEl.innerHTML = '';
       vbEl.style.display = 'none';
@@ -840,13 +840,15 @@ function renderAdmin() {
   var tbody = document.getElementById('adminBody');
   var empty = document.getElementById('adminEmpty');
 
+  var tableWrap = document.getElementById('adminTableWrap');
+
   if (filtered.length === 0) {
     tbody.innerHTML = '';
     if (allOrders.length === 0) {
-      document.querySelector('.admin-table-wrap').style.display = 'none';
-      empty.style.display = '';
+      tableWrap.style.display = 'none';
+      empty.style.display = 'block';
     } else {
-      document.querySelector('.admin-table-wrap').style.display = '';
+      tableWrap.style.display = 'block';
       empty.style.display = 'none';
       tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:40px;color:var(--text-muted);font-style:italic;">No orders match your filters.</td></tr>';
     }
@@ -854,7 +856,7 @@ function renderAdmin() {
   }
 
   empty.style.display = 'none';
-  document.querySelector('.admin-table-wrap').style.display = '';
+  tableWrap.style.display = 'block';
 
   var html = '';
   for (var i = 0; i < filtered.length; i++) {
@@ -1039,7 +1041,7 @@ function updateDeadlineDisplay() {
     var d = new Date(val + 'T00:00:00');
     var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     span.textContent = months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-    block.style.display = '';
+    block.style.display = 'block';
   } else if (block) {
     block.style.display = 'none';
   }
