@@ -586,6 +586,9 @@
 </div>
 
 <script>
+/* ═══════════════ CONFIG ═══════════════ */
+var APPS_SCRIPT_URL = ''; // https://script.google.com/macros/s/AKfycbwQvUx0eFsYI00hfcTFBHHeshMEUUrtgI6t32WkXiU9OY5NPjT23W6pzSC_t3QyADSEeg/exec
+
 /* ═══════════════ STORAGE HELPERS ═══════════════ */
 function getOrders() {
   try { return JSON.parse(localStorage.getItem('illuminate_orders') || '[]'); }
@@ -595,11 +598,7 @@ function saveOrders(orders) {
   localStorage.setItem('illuminate_orders', JSON.stringify(orders));
 }
 function nextOrderId() {
-  var orders = getOrders();
-  if (orders.length === 0) return 1;
-  var max = 0;
-  for (var i = 0; i < orders.length; i++) { if (orders[i].id > max) max = orders[i].id; }
-  return max + 1;
+  return Date.now(); // timestamp ID — unique across all devices
 }
 
 /* ═══════════════ VIEW SWITCHING ═══════════════ */
@@ -705,7 +704,7 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
   for (var s = 0; s < shipToCbs.length; s++) { shipToVals.push(shipToCbs[s].value); }
   if (shipToVals.length === 0) { alert("Please select a Ship To Location."); return; }
 
-  // Save to localStorage
+  // Save order
   var order = {
     id: nextOrderId(),
     date: new Date().toISOString(),
@@ -716,9 +715,17 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
     items: orderItems,
     total: orderTotal
   };
+  // Always save locally as backup
   var orders = getOrders();
   orders.push(order);
   saveOrders(orders);
+  // Send to Google Sheets if configured
+  if (APPS_SCRIPT_URL) {
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(Object.assign({ action: 'submit' }, order))
+    }).catch(function() {});
+  }
 
   // Build order detail table for confirmation modal
   var detailHtml = '<table class="modal-order-table"><thead><tr><th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead><tbody>';
@@ -773,7 +780,22 @@ function renderAdmin() {
   }
 }
 function _renderAdmin() {
-  var allOrders = getOrders();
+  if (APPS_SCRIPT_URL) {
+    var tbody = document.getElementById('adminBody');
+    var tw = document.getElementById('adminTableWrap');
+    var empty = document.getElementById('adminEmpty');
+    if (tw) tw.style.display = 'block';
+    if (empty) empty.style.display = 'none';
+    if (tbody) tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:36px;color:var(--text-muted);font-style:italic;">Loading orders from Google Sheets...</td></tr>';
+    fetch(APPS_SCRIPT_URL)
+      .then(function(r) { return r.json(); })
+      .then(function(fetched) { _doRenderAdmin(fetched); })
+      .catch(function() { _doRenderAdmin(getOrders()); }); // fallback to local on error
+    return;
+  }
+  _doRenderAdmin(getOrders());
+}
+function _doRenderAdmin(allOrders) {
   var search = (document.getElementById('adminSearch').value || '').toLowerCase();
   var locFilter = (document.getElementById('filterLocation') || {}).value || '';
   var dateFrom = (document.getElementById('filterDateFrom') || {}).value || '';
@@ -907,6 +929,12 @@ function updateOrder(id, field, value) {
     if (orders[i].id === id) { orders[i][field] = value; break; }
   }
   saveOrders(orders);
+  if (APPS_SCRIPT_URL) {
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'update', id: id, field: field, value: value })
+    }).catch(function() {});
+  }
 }
 
 function clearAdminFilters() {
@@ -921,6 +949,12 @@ function deleteOrder(id) {
   if (!confirm('Delete order #' + id + '?')) return;
   var orders = getOrders().filter(function(o) { return o.id !== id; });
   saveOrders(orders);
+  if (APPS_SCRIPT_URL) {
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'delete', id: id })
+    }).catch(function() {});
+  }
   renderAdmin();
 }
 
