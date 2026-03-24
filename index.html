@@ -539,6 +539,7 @@
       <button class="admin-filter-clear" onclick="clearAdminFilters()">Clear filters</button>
     </div>
   </div>
+  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;letter-spacing:.04em;">Data source: <span id="adminDataSource">—</span></div>
   <div class="vendor-breakdown" id="vendorBreakdown" style="display:none;"></div>
   <div class="admin-table-wrap" id="adminTableWrap">
     <table class="admin-table" id="adminTable">
@@ -723,6 +724,7 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
   if (APPS_SCRIPT_URL) {
     fetch(APPS_SCRIPT_URL, {
       method: 'POST',
+      mode: 'no-cors',
       body: JSON.stringify(Object.assign({ action: 'submit' }, order))
     }).catch(function() {});
   }
@@ -780,6 +782,7 @@ function renderAdmin() {
   }
 }
 function _renderAdmin() {
+  var srcEl = document.getElementById('adminDataSource');
   if (APPS_SCRIPT_URL) {
     var tbody = document.getElementById('adminBody');
     var tw = document.getElementById('adminTableWrap');
@@ -787,12 +790,20 @@ function _renderAdmin() {
     if (tw) tw.style.display = 'block';
     if (empty) empty.style.display = 'none';
     if (tbody) tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:36px;color:var(--text-muted);font-style:italic;">Loading orders from Google Sheets...</td></tr>';
+    if (srcEl) srcEl.textContent = 'Loading...';
     fetch(APPS_SCRIPT_URL)
       .then(function(r) { return r.json(); })
-      .then(function(fetched) { _doRenderAdmin(fetched); })
-      .catch(function() { _doRenderAdmin(getOrders()); }); // fallback to local on error
+      .then(function(fetched) {
+        if (srcEl) { srcEl.textContent = 'Google Sheets (' + fetched.length + ' orders)'; srcEl.style.color = '#5cb85c'; }
+        _doRenderAdmin(fetched);
+      })
+      .catch(function(err) {
+        if (srcEl) { srcEl.textContent = 'ERROR: ' + err.message + ' — showing local only'; srcEl.style.color = 'red'; }
+        _doRenderAdmin(getOrders());
+      });
     return;
   }
+  if (srcEl) { srcEl.textContent = 'Local only (no Apps Script URL set)'; srcEl.style.color = 'orange'; }
   _doRenderAdmin(getOrders());
 }
 function _doRenderAdmin(allOrders) {
@@ -932,6 +943,7 @@ function updateOrder(id, field, value) {
   if (APPS_SCRIPT_URL) {
     fetch(APPS_SCRIPT_URL, {
       method: 'POST',
+      mode: 'no-cors',
       body: JSON.stringify({ action: 'update', id: id, field: field, value: value })
     }).catch(function() {});
   }
@@ -952,6 +964,7 @@ function deleteOrder(id) {
   if (APPS_SCRIPT_URL) {
     fetch(APPS_SCRIPT_URL, {
       method: 'POST',
+      mode: 'no-cors',
       body: JSON.stringify({ action: 'delete', id: id })
     }).catch(function() {});
   }
