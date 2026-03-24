@@ -448,7 +448,7 @@
     <div class="form-actions">
       <div class="actions-left">
         <button type="button" class="btn btn-ghost" onclick="clearForm()">
-          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 100 .49-.5"/></svg>
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
           Clear
         </button>
       </div>
@@ -765,6 +765,14 @@ function sortAdmin(key) {
 var adminFilteredOrders = [];
 
 function renderAdmin() {
+  try { _renderAdmin(); } catch(e) {
+    var tbody = document.getElementById('adminBody');
+    var tw = document.getElementById('adminTableWrap');
+    if (tw) tw.style.display = 'block';
+    if (tbody) tbody.innerHTML = '<tr><td colspan="11" style="color:red;padding:20px;">Render error: ' + e.message + ' — ' + e.stack + '</td></tr>';
+  }
+}
+function _renderAdmin() {
   var allOrders = getOrders();
   var search = (document.getElementById('adminSearch').value || '').toLowerCase();
   var locFilter = (document.getElementById('filterLocation') || {}).value || '';
