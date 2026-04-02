@@ -980,46 +980,51 @@ function clearAllOrders() {
 /* ═══════════════ CSV EXPORT ═══════════════ */
 function exportCSV() {
   var toExport = adminFilteredOrders;
-  if (toExport.length === 0) {
-    alert(getOrders().length === 0 ? 'No orders to export.' : 'No orders match current filters.');
+  if (!toExport || toExport.length === 0) {
+    alert('No orders to export. Make sure the admin portal has finished loading orders before exporting.');
     return;
   }
-  var rows = [['Order ID','Date','Name','Email','Phone','Ship To Location','Status','Vendor','Product','Unit Price','Quantity','Subtotal','Order Total','Admin Notes']];
-  for (var i = 0; i < toExport.length; i++) {
-    var o = toExport[i];
-    var d = new Date(o.date);
-    var dateStr = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-    for (var j = 0; j < o.items.length; j++) {
-      var it = o.items[j];
-      rows.push([
-        o.id,
-        dateStr,
-        '"' + o.name.replace(/"/g, '""') + '"',
-        '"' + o.email.replace(/"/g, '""') + '"',
-        '"' + (o.phone || '').replace(/"/g, '""') + '"',
-        '"' + (o.shipTo || '').replace(/"/g, '""') + '"',
-        '"' + (o.status || 'Pending').replace(/"/g, '""') + '"',
-        '"' + it.vendor.replace(/"/g, '""') + '"',
-        '"' + it.product.replace(/"/g, '""') + '"',
-        it.price.toFixed(2),
-        it.quantity,
-        it.subtotal.toFixed(2),
-        o.total.toFixed(2),
-        '"' + (o.adminNotes || '').replace(/"/g, '""') + '"'
-      ]);
+  try {
+    var rows = [['Order ID','Date','Name','Email','Phone','Ship To Location','Status','Vendor','Product','Unit Price','Quantity','Subtotal','Order Total','Admin Notes']];
+    for (var i = 0; i < toExport.length; i++) {
+      var o = toExport[i];
+      var d = new Date(o.date);
+      var dateStr = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+      var items = Array.isArray(o.items) ? o.items : [];
+      for (var j = 0; j < items.length; j++) {
+        var it = items[j];
+        rows.push([
+          o.id,
+          dateStr,
+          '"' + String(o.name || '').replace(/"/g, '""') + '"',
+          '"' + String(o.email || '').replace(/"/g, '""') + '"',
+          '"' + String(o.phone || '').replace(/"/g, '""') + '"',
+          '"' + String(o.shipTo || '').replace(/"/g, '""') + '"',
+          '"' + String(o.status || 'Pending').replace(/"/g, '""') + '"',
+          '"' + String(it.vendor || '').replace(/"/g, '""') + '"',
+          '"' + String(it.product || '').replace(/"/g, '""') + '"',
+          Number(it.price).toFixed(2),
+          it.quantity,
+          Number(it.subtotal).toFixed(2),
+          Number(o.total).toFixed(2),
+          '"' + String(o.adminNotes || '').replace(/"/g, '""') + '"'
+        ]);
+      }
     }
+    var csv = '\uFEFF';
+    for (var r = 0; r < rows.length; r++) csv += rows[r].join(',') + '\n';
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'illuminate_orders_' + new Date().toISOString().slice(0,10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch(e) {
+    alert('Export failed: ' + e.message);
   }
-  var csv = '';
-  for (var r = 0; r < rows.length; r++) csv += rows[r].join(',') + '\n';
-  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'illuminate_orders_' + new Date().toISOString().slice(0,10) + '.csv';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 }
 
 /* ═══════════════ VENDOR VISIBILITY ═══════════════ */
