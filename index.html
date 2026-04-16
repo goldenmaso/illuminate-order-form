@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Employee Skin Care Order Form</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -126,6 +127,7 @@
     .product-table td:last-child { text-align: center; }
     .product-name { letter-spacing: .02em; }
     .prod-size { font-size: 11px; color: var(--text-muted); font-weight: 300; margin-left: 3px; }
+    .prod-contents { display: block; font-size: 10.5px; color: var(--text-muted); font-weight: 300; margin-top: 3px; letter-spacing: .02em; }
     .qty-input { width: 42px; height: 28px; text-align: center; border: 1px solid var(--border); border-left: none; border-right: none; background: var(--dark); color: var(--text-primary); font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500; outline: none; }
     .qty-input:focus { border-color: var(--gold); background: #1C1A14; }
     .order-summary { background: var(--dark); border: 1px solid var(--border-gold); border-radius: var(--radius); padding: 20px 24px; margin-top: 4px; }
@@ -194,6 +196,9 @@
     .admin-table .col-date { white-space: nowrap; font-size: 12px; }
     .admin-table .col-total { color: var(--white); font-weight: 500; white-space: nowrap; }
     .admin-table .col-items { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+    .item-line { display: flex; align-items: center; gap: 5px; }
+    .item-remove-btn { flex-shrink: 0; background: none; border: 1px solid transparent; color: var(--text-muted); cursor: pointer; font-size: 13px; line-height: 1; padding: 1px 5px; border-radius: 3px; transition: all var(--transition); }
+    .item-remove-btn:hover { color: var(--error); border-color: var(--error); background: var(--error-bg); }
     .admin-table .col-items .item-line { display: block; }
     .admin-table .col-actions button { background: none; border: 1px solid var(--border); color: var(--text-muted); width: 30px; height: 30px; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all var(--transition); margin-right: 4px; }
     .admin-table .col-actions button:hover { border-color: var(--error); color: var(--error); }
@@ -408,12 +413,12 @@
             <thead><tr><th>Product</th><th>Price</th><th>Qty</th></tr></thead>
             <tbody>
               <tr data-vendor="Epicutis" data-product="Luxury Skincare Sets" data-price="100.00"><td class="product-name">Luxury Skincare Sets</td><td>$100.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
-              <tr data-vendor="Epicutis" data-product="Cleansing Essential Sets" data-price="52.00"><td class="product-name">Cleansing Essential Sets</td><td>$52.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Cleansing Essential Sets" data-price="41.60"><td class="product-name">Cleansing Essential Sets</td><td>$41.60</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
               <tr data-vendor="Epicutis" data-product="Oil Cleanser" data-price="42.00"><td class="product-name">Oil Cleanser</td><td>$42.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
-              <tr data-vendor="Epicutis" data-product="Lipid Serum" data-price="125.00"><td class="product-name">Lipid Serum</td><td>$125.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
-              <tr data-vendor="Epicutis" data-product="Hyvia Creme" data-price="85.00"><td class="product-name">Hyvia Creme</td><td>$85.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
-              <tr data-vendor="Epicutis" data-product="Arctigenin Brightening Treatment" data-price="85.00"><td class="product-name">Arctigenin Brightening Treatment</td><td>$85.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
-              <tr data-vendor="Epicutis" data-product="Hydrobiome Mist" data-price="37.50"><td class="product-name">Hydrobiome Mist</td><td>$37.50</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Lipid Serum" data-price="100.00"><td class="product-name">Lipid Serum</td><td>$100.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Hyvia Creme" data-price="68.00"><td class="product-name">Hyvia Creme</td><td>$68.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Arctigenin Brightening Treatment" data-price="68.00"><td class="product-name">Arctigenin Brightening Treatment</td><td>$68.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="Epicutis" data-product="Hydrobiome Mist" data-price="30.00"><td class="product-name">Hydrobiome Mist</td><td>$30.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
               <tr data-vendor="Epicutis" data-product="Lipid Shield SPF 30" data-price="45.00"><td class="product-name">Lipid Shield SPF 30</td><td>$45.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
               <tr data-vendor="Epicutis" data-product="Lipid Recovery Mask Face Box of 5" data-price="55.00"><td class="product-name">Lipid Recovery Mask – Face <span class="prod-size">Box of 5</span></td><td>$55.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
               <tr data-vendor="Epicutis" data-product="Lipid Recovery Mask Neck Box of 5" data-price="65.00"><td class="product-name">Lipid Recovery Mask – Neck <span class="prod-size">Box of 5</span></td><td>$65.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
@@ -431,6 +436,60 @@
               <tr data-vendor="Epicutis" data-product="Backbar Lipid Recovery Masks Eyes 10 Masks" data-price="80.00"><td class="product-name">Backbar Lipid Recovery Masks – Eyes <span class="prod-size">10 Masks</span></td><td>$80.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
               <tr data-vendor="Epicutis" data-product="Backbar Lipid Body Treatment 16oz" data-price="175.00"><td class="product-name">Backbar Lipid Body Treatment <span class="prod-size">16 oz.</span></td><td>$175.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
               <tr data-vendor="Epicutis" data-product="Ice Globes" data-price="100.00"><td class="product-name">Ice Globes</td><td>$100.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="divider-gold"></div>
+        <!-- SKINBETTER SCIENCE -->
+        <div class="vendor-section" id="vendor-section-SkinBetter">
+          <div class="vendor-label"><span class="vendor-name">skinbetter science</span><div class="vendor-line"></div></div>
+          <p class="vendor-notice">Available to order quarterly with no restrictions or minimum orders.</p>
+          <table class="product-table" id="table-skinbetter">
+            <thead><tr><th>Product</th><th>Price</th><th>Qty</th></tr></thead>
+            <tbody>
+              <tr data-vendor="SkinBetter" data-product="skinbetter AlphaRet Overnight Cream 50ml" data-price="84.00"><td class="product-name">AlphaRet Overnight Cream <span class="prod-size">50 ml</span></td><td>$84.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter AlphaRet Overnight Cream 30ml" data-price="58.00"><td class="product-name">AlphaRet Overnight Cream <span class="prod-size">30 ml</span></td><td>$58.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Intensive AlphaRet Overnight Cream 50ml" data-price="84.00"><td class="product-name">Intensive AlphaRet Overnight Cream <span class="prod-size">50 ml</span></td><td>$84.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Intensive AlphaRet Overnight Cream 30ml" data-price="58.00"><td class="product-name">Intensive AlphaRet Overnight Cream <span class="prod-size">30 ml</span></td><td>$58.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter AlphaRet Clearing Serum 50ml" data-price="84.00"><td class="product-name">AlphaRet Clearing Serum <span class="prod-size">50 ml</span></td><td>$84.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter AlphaRet Clearing Serum 30ml" data-price="58.00"><td class="product-name">AlphaRet Clearing Serum <span class="prod-size">30 ml</span></td><td>$58.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Ampra Volumizing Macro HA Serum 30ml" data-price="72.00"><td class="product-name">Ampra Volumizing Macro HA Serum <span class="prod-size">30 ml</span></td><td>$72.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Mystro Revive Renewing Serum 30ml" data-price="98.00"><td class="product-name">Mystro Revive Renewing Serum <span class="prod-size">30 ml</span></td><td>$98.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Mystro Active Balance Serum 50ml" data-price="128.00"><td class="product-name">Mystro Active Balance Serum <span class="prod-size">50 ml</span></td><td>$128.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Mystro Active Balance Serum 30ml" data-price="90.00"><td class="product-name">Mystro Active Balance Serum <span class="prod-size">30 ml</span></td><td>$90.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Even Intensive Skin Tone Correcting Serum 50ml" data-price="76.00"><td class="product-name">Even Intensive Skin Tone Correcting Serum <span class="prod-size">50 ml</span></td><td>$76.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Even Tone Correcting Serum 50ml" data-price="68.00"><td class="product-name">Even Tone Correcting Serum <span class="prod-size">50 ml</span></td><td>$68.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Trio Luxe Moisture Treatment 50ml" data-price="72.00"><td class="product-name">Trio Luxe Moisture Treatment <span class="prod-size">50 ml</span></td><td>$72.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Trio Rebalancing Moisture Treatment 50ml" data-price="64.00"><td class="product-name">Trio Rebalancing Moisture Treatment <span class="prod-size">50 ml</span></td><td>$64.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter InterFuse Treatment Cream FACE and NECK 50ml" data-price="84.00"><td class="product-name">InterFuse Treatment Cream FACE &amp; NECK <span class="prod-size">50 ml</span></td><td>$84.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter InterFuse Treatment Cream FACE and NECK 30ml" data-price="60.00"><td class="product-name">InterFuse Treatment Cream FACE &amp; NECK <span class="prod-size">30 ml</span></td><td>$60.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter InterFuse Intensive Treatment LINES 30ml" data-price="98.00"><td class="product-name">InterFuse Intensive Treatment LINES <span class="prod-size">30 ml</span></td><td>$98.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter InterFuse Intensive Treatment LINES 15ml" data-price="58.00"><td class="product-name">InterFuse Intensive Treatment LINES <span class="prod-size">15 ml</span></td><td>$58.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter BioRewind Skin Health Dietary Supplement 60 capsules" data-price="54.00"><td class="product-name">BioRewind Skin Health Dietary Supplement <span class="prod-size">60 capsules</span></td><td>$54.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter AlphaRet Body Overnight Cream 5oz" data-price="56.00"><td class="product-name">AlphaRet Body Overnight Cream <span class="prod-size">5 oz.</span></td><td>$56.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Techno Neck Perfecting Cream 50ml" data-price="64.00"><td class="product-name">Techno Neck Perfecting Cream <span class="prod-size">50 ml</span></td><td>$64.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter AlphaRet Exfoliating Peel Pads 30 count" data-price="52.00"><td class="product-name">AlphaRet Exfoliating Peel Pads <span class="prod-size">30 count</span></td><td>$52.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter EyeMax AlphaRet Overnight Cream 15ml" data-price="54.00"><td class="product-name">EyeMax AlphaRet Overnight Cream <span class="prod-size">15 ml</span></td><td>$54.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter InterFuse Treatment Cream EYE 15ml" data-price="54.00"><td class="product-name">InterFuse Treatment Cream EYE <span class="prod-size">15 ml</span></td><td>$54.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Instant Effect Gel EYE 15ml" data-price="46.00"><td class="product-name">Instant Effect Gel EYE <span class="prod-size">15 ml</span></td><td>$46.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Alto Advanced Defense and Repair Serum 50ml" data-price="110.00"><td class="product-name">Alto Advanced Defense and Repair Serum <span class="prod-size">50 ml</span></td><td>$110.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Alto Advanced Defense and Repair Serum 30ml" data-price="78.00"><td class="product-name">Alto Advanced Defense and Repair Serum <span class="prod-size">30 ml</span></td><td>$78.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Alto Defense Serum 50ml" data-price="96.00"><td class="product-name">Alto Defense Serum <span class="prod-size">50 ml</span></td><td>$96.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Alto Defense Serum 30ml" data-price="70.00"><td class="product-name">Alto Defense Serum <span class="prod-size">30 ml</span></td><td>$70.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Solo Hydrating Defense MEN 50ml" data-price="72.00"><td class="product-name">Solo Hydrating Defense MEN <span class="prod-size">50 ml</span></td><td>$72.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter sunbetter TONE SMART SPF 75 Sunscreen Lotion 50ml" data-price="30.00"><td class="product-name">sunbetter TONE SMART SPF 75 Sunscreen Lotion <span class="prod-size">50 ml</span></td><td>$30.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter sunbetter SHEER SPF 70 Sunscreen Lotion 50ml" data-price="30.00"><td class="product-name">sunbetter SHEER SPF 70 Sunscreen Lotion <span class="prod-size">50 ml</span></td><td>$30.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter sunbetter TONE SMART SPF 68 Sunscreen Compact 12g" data-price="28.00"><td class="product-name">sunbetter TONE SMART SPF 68 Sunscreen Compact <span class="prod-size">12 g</span></td><td>$28.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter sunbetter SHEER SPF 56 Sunscreen Compact 12g" data-price="28.00"><td class="product-name">sunbetter SHEER SPF 56 Sunscreen Compact <span class="prod-size">12 g</span></td><td>$28.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter sunbetter SHEER SPF 56 Sunscreen Stick 20g" data-price="22.00"><td class="product-name">sunbetter SHEER SPF 56 Sunscreen Stick <span class="prod-size">20 g</span></td><td>$22.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Refining Foam Cleanser 5fl oz" data-price="20.00"><td class="product-name">Refining Foam Cleanser <span class="prod-size">5 fl. oz.</span></td><td>$20.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Cleansing Gel 8fl oz" data-price="22.00"><td class="product-name">Cleansing Gel <span class="prod-size">8 fl. oz.</span></td><td>$22.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Detoxifying Scrub Mask 2oz" data-price="26.00"><td class="product-name">Detoxifying Scrub Mask <span class="prod-size">2 oz.</span></td><td>$26.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Hydration Boosting Cream 50ml" data-price="42.00"><td class="product-name">Hydration Boosting Cream <span class="prod-size">50 ml</span></td><td>$42.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter AlphaRet Starter Set 4-piece" data-price="95.60"><td class="product-name">AlphaRet Starter Set <span class="prod-size">4-piece</span><span class="prod-contents">AlphaRet Overnight Cream 15ml · EyeMax AlphaRet Overnight Cream 15ml · AlphaRet Body Overnight Cream 15ml · AlphaRet Exfoliating Peel Pads (10 pads)</span></td><td>$95.60</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Glow and Go Set 5-piece" data-price="140.00"><td class="product-name">Glow and Go Set <span class="prod-size">5-piece</span><span class="prod-contents">AlphaRet Overnight Cream 15ml · Trio Luxe Moisture Treatment 15ml · Even Intensive Skin Tone Correcting Serum 50ml · Refining Foam Cleanser 1.7 fl. oz. · sunbetter TONE SMART SPF 75 Sunscreen Lotion 15ml</span></td><td>$140.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter Better Balance Duo" data-price="74.00"><td class="product-name">Better Balance Duo<span class="prod-contents">Mystro Active Balance Serum 15ml · Trio Luxe Moisture Treatment 15ml</span></td><td>$74.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
+              <tr data-vendor="SkinBetter" data-product="skinbetter A-Team Duo Advanced Kit" data-price="74.00"><td class="product-name">A-Team Duo Advanced Kit<span class="prod-contents">AlphaRet Overnight Cream 15ml · Alto Advanced Defense and Repair Serum 15ml</span></td><td>$74.00</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
             </tbody>
           </table>
         </div>
@@ -504,6 +563,14 @@
         <span class="vendor-toggle-name">Epicutis</span>
         <span class="vendor-toggle-status" id="vts-Epicutis">Visible</span>
       </div>
+      <div class="vendor-toggle-card active" id="vtc-SkinBetter">
+        <label class="toggle-switch">
+          <input type="checkbox" id="vt-SkinBetter" checked onchange="toggleVendor('SkinBetter', this.checked)" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="vendor-toggle-name">skinbetter science</span>
+        <span class="vendor-toggle-status" id="vts-SkinBetter">Visible</span>
+      </div>
     </div>
   </div>
   <div class="admin-toolbar">
@@ -516,6 +583,10 @@
       <button class="btn btn-ghost" onclick="exportCSV()">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Export CSV
+      </button>
+      <button class="btn btn-ghost" onclick="exportVendorXLSX()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Vendor Summary
       </button>
       <button class="btn btn-danger" onclick="clearAllOrders()">
         <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
@@ -906,7 +977,10 @@ function _doRenderAdmin(allOrders) {
     var dateStr = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
     var itemsHtml = '';
     for (var j = 0; j < o.items.length; j++) {
-      itemsHtml += '<span class="item-line">' + o.items[j].quantity + 'x ' + escapeHtml(o.items[j].product) + ' ($' + o.items[j].subtotal.toFixed(2) + ')</span>';
+      itemsHtml += '<span class="item-line">' +
+        '<button class="item-remove-btn" onclick="removeOrderItem(' + o.id + ',' + j + ')" title="Remove item">&#x2715;</button>' +
+        o.items[j].quantity + '&times; ' + escapeHtml(o.items[j].product) + ' (<strong>$' + Number(o.items[j].subtotal).toFixed(2) + '</strong>)' +
+        '</span>';
     }
     var status = o.status || 'Pending';
     var statusCls = 'status-' + status.toLowerCase();
@@ -917,7 +991,7 @@ function _doRenderAdmin(allOrders) {
       '<td>' + escapeHtml(o.name) + '</td>' +
       '<td>' + escapeHtml(o.email) + '</td>' +
       '<td>' + escapeHtml(o.phone || '\u2014') + '</td>' +
-      '<td class="col-total">$' + o.total.toFixed(2) + '</td>' +
+      '<td class="col-total">$' + Number(o.total).toFixed(2) + '</td>' +
       '<td class="col-items">' + itemsHtml + '</td>' +
       '<td style="font-size:12px;color:var(--text-muted);max-width:140px;">' + escapeHtml(o.shipTo || '\u2014') + '</td>' +
       '<td><select class="status-select ' + statusCls + '" onchange="updateOrder(' + o.id + ',\'status\',this.value);this.className=\'status-select status-\'+this.value.toLowerCase();">' +
@@ -1027,15 +1101,147 @@ function exportCSV() {
   }
 }
 
+/* ═══════════════ REMOVE ORDER ITEM ═══════════════ */
+function removeOrderItem(orderId, itemIndex) {
+  // Find the order in current rendered data
+  var targetOrder = null;
+  for (var i = 0; i < adminFilteredOrders.length; i++) {
+    if (String(adminFilteredOrders[i].id) === String(orderId)) {
+      targetOrder = adminFilteredOrders[i];
+      break;
+    }
+  }
+  if (!targetOrder || !targetOrder.items[itemIndex]) return;
+
+  var itemName = targetOrder.items[itemIndex].product;
+  if (!confirm('Remove "' + itemName + '" from Order #' + orderId + '? The total will be recalculated.')) return;
+
+  // Remove item and recalculate total
+  targetOrder.items.splice(itemIndex, 1);
+  var newTotal = 0;
+  for (var j = 0; j < targetOrder.items.length; j++) {
+    newTotal += Number(targetOrder.items[j].subtotal);
+  }
+  targetOrder.total = Number(newTotal.toFixed(2));
+
+  // Update localStorage
+  var orders = getOrders();
+  for (var k = 0; k < orders.length; k++) {
+    if (String(orders[k].id) === String(orderId)) {
+      orders[k].items = targetOrder.items;
+      orders[k].total = targetOrder.total;
+      break;
+    }
+  }
+  saveOrders(orders);
+
+  // Push updated items and total to Apps Script
+  if (APPS_SCRIPT_URL) {
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      body: JSON.stringify({ action: 'update', id: orderId, field: 'items', value: JSON.stringify(targetOrder.items) })
+    }).catch(function(){});
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      body: JSON.stringify({ action: 'update', id: orderId, field: 'total', value: targetOrder.total })
+    }).catch(function(){});
+  }
+
+  // Re-render
+  renderAdmin();
+}
+
+/* ═══════════════ VENDOR SUMMARY XLSX ═══════════════ */
+function exportVendorXLSX() {
+  var toExport = adminFilteredOrders;
+  if (!toExport || toExport.length === 0) {
+    alert('No orders to export. Make sure the admin portal has finished loading orders first.');
+    return;
+  }
+  try {
+    // Build vendor → product totals
+    var vendorMap = {};
+    for (var i = 0; i < toExport.length; i++) {
+      var o = toExport[i];
+      var items = Array.isArray(o.items) ? o.items : [];
+      for (var j = 0; j < items.length; j++) {
+        var it = items[j];
+        var vn = String(it.vendor || 'Unknown');
+        var pn = String(it.product || 'Unknown');
+        if (!vendorMap[vn]) vendorMap[vn] = {};
+        if (!vendorMap[vn][pn]) vendorMap[vn][pn] = { unitPrice: Number(it.price), qty: 0, total: 0 };
+        vendorMap[vn][pn].qty   += Number(it.quantity);
+        vendorMap[vn][pn].total += Number(it.subtotal);
+      }
+    }
+
+    var wb = XLSX.utils.book_new();
+    var vendors = Object.keys(vendorMap);
+
+    for (var v = 0; v < vendors.length; v++) {
+      var vendor = vendors[v];
+      var products = Object.keys(vendorMap[vendor]);
+      var wsData = [];
+
+      // Header row
+      wsData.push(['Product', 'Unit Price', 'Total Qty', 'Total Amount']);
+
+      var grandTotal = 0;
+      for (var p = 0; p < products.length; p++) {
+        var prod = products[p];
+        var d = vendorMap[vendor][prod];
+        wsData.push([
+          prod,
+          Number(d.unitPrice.toFixed(2)),
+          d.qty,
+          Number(d.total.toFixed(2))
+        ]);
+        grandTotal += d.total;
+      }
+
+      // Totals row
+      wsData.push(['', '', 'ORDER TOTAL', Number(grandTotal.toFixed(2))]);
+
+      var ws = XLSX.utils.aoa_to_sheet(wsData);
+
+      // Column widths
+      ws['!cols'] = [{ wch: 48 }, { wch: 12 }, { wch: 12 }, { wch: 16 }];
+
+      // Bold header row
+      var headerRange = XLSX.utils.decode_range(ws['!ref']);
+      for (var c = headerRange.s.c; c <= headerRange.e.c; c++) {
+        var hCell = ws[XLSX.utils.encode_cell({ r: 0, c: c })];
+        if (hCell) { hCell.s = { font: { bold: true } }; }
+      }
+
+      // Bold total row
+      var totalRow = wsData.length - 1;
+      for (var tc = 0; tc <= 3; tc++) {
+        var tCell = ws[XLSX.utils.encode_cell({ r: totalRow, c: tc })];
+        if (tCell) { tCell.s = { font: { bold: true } }; }
+      }
+
+      // Sheet name max 31 chars (Excel limit)
+      var sheetName = vendor.slice(0, 31);
+      XLSX.utils.book_append_sheet(wb, ws, sheetName);
+    }
+
+    var filename = 'vendor_summary_' + new Date().toISOString().slice(0, 10) + '.xlsx';
+    XLSX.writeFile(wb, filename);
+  } catch(e) {
+    alert('Export failed: ' + e.message);
+  }
+}
+
 /* ═══════════════ VENDOR VISIBILITY ═══════════════ */
-var VENDORS = ['Alastin', 'Plated', 'Epicutis'];
+var VENDORS = ['Alastin', 'Plated', 'Epicutis', 'SkinBetter'];
 
 function getVendorVisibility() {
   try {
     var stored = localStorage.getItem('vendorVisibility');
     if (stored) return JSON.parse(stored);
   } catch(e) {}
-  return { Alastin: true, Plated: true, Epicutis: true };
+  return { Alastin: true, Plated: true, Epicutis: true, SkinBetter: true };
 }
 
 function saveVendorVisibility(vis) {
