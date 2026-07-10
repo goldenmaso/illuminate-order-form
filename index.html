@@ -858,6 +858,7 @@ function sortAdmin(key) {
 }
 
 var adminFilteredOrders = [];
+var adminAllOrders = [];
 
 function renderAdmin() {
   try { _renderAdmin(); } catch(e) {
@@ -893,6 +894,7 @@ function _renderAdmin() {
   _doRenderAdmin(getOrders());
 }
 function _doRenderAdmin(allOrders) {
+  adminAllOrders = allOrders;
   var search = (document.getElementById('adminSearch').value || '').toLowerCase();
   var locFilter = (document.getElementById('filterLocation') || {}).value || '';
   var dateFrom = (document.getElementById('filterDateFrom') || {}).value || '';
@@ -1162,8 +1164,8 @@ function removeOrderItem(orderId, itemIndex) {
     }).catch(function(){});
   }
 
-  // Re-render
-  renderAdmin();
+  // Re-render from cached data so a Google Sheets re-fetch doesn't overwrite the removal
+  _doRenderAdmin(adminAllOrders);
 }
 
 /* ═══════════════ VENDOR SUMMARY XLSX ═══════════════ */
