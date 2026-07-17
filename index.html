@@ -128,8 +128,7 @@
     .product-name { letter-spacing: .02em; }
     .prod-size { font-size: 11px; color: var(--text-muted); font-weight: 300; margin-left: 3px; }
     .prod-contents { display: block; font-size: 10.5px; color: var(--text-muted); font-weight: 300; margin-top: 3px; letter-spacing: .02em; }
-    .zo-locked { opacity: 0.25; pointer-events: none; }
-    .zo-limit-notice { font-size: 11.5px; color: var(--gold-light); background: var(--gold-dim); border: 1px solid var(--border-gold); border-radius: var(--radius-sm); padding: 8px 12px; margin-top: 10px; display: none; letter-spacing: .03em; }
+
     .qty-input { width: 42px; height: 28px; text-align: center; border: 1px solid var(--border); border-left: none; border-right: none; background: var(--dark); color: var(--text-primary); font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500; outline: none; }
     .qty-input:focus { border-color: var(--gold); background: #1C1A14; }
     .order-summary { background: var(--dark); border: 1px solid var(--border-gold); border-radius: var(--radius); padding: 20px 24px; margin-top: 4px; }
@@ -514,7 +513,7 @@
         <!-- ZO SKIN HEALTH -->
         <div class="vendor-section" id="vendor-section-ZO">
           <div class="vendor-label"><span class="vendor-name">ZO Skin Health</span><div class="vendor-line"></div></div>
-          <p class="vendor-notice">Each employee can order 1 SKU from ZO at any quantity as long as it doesn't exceed $200. The ordering site will cap your ZO order to these rules.</p>
+          <p class="vendor-notice">ZO Skin Health added to the program in Q3 2026!</p>
           <table class="product-table" id="table-zo">
             <thead><tr><th>Product</th><th>Price</th><th>Qty</th></tr></thead>
             <tbody>
@@ -565,7 +564,6 @@
               <tr data-vendor="ZO" data-product="ZO Wrinkle + Texture" data-price="67.20"><td class="product-name">Wrinkle + Texture <span class="prod-size">50 mL / 1.7 Fl. Oz.</span></td><td>$67.20</td><td><input type="number" class="qty-input" value="0" min="0" max="99"/></td></tr>
             </tbody>
           </table>
-          <div class="zo-limit-notice" id="zo-limit-notice"></div>
         </div>
         <div class="divider"></div>
         <!-- ORDER SUMMARY -->
@@ -1398,49 +1396,11 @@ function updateDeadlineDisplay() {
 }
 
 /* ═══════════════ INIT ═══════════════ */
-function enforceZOLimits(changedInput) {
-  var zoSection = document.getElementById('vendor-section-ZO');
-  if (!zoSection) return;
-  var allZOInputs = zoSection.querySelectorAll('.qty-input');
-  var row = changedInput.parentNode;
-  while (row && row.tagName !== 'TR') row = row.parentNode;
-  var price = row ? parseFloat(row.getAttribute('data-price')) : 0;
-  var qty = parseInt(changedInput.value) || 0;
-  var notice = document.getElementById('zo-limit-notice');
-
-  // Cap at $200
-  if (qty > 0 && price > 0 && price * qty > 200) {
-    qty = Math.floor(200 / price);
-    changedInput.value = qty;
-    if (notice) { notice.textContent = 'Quantity adjusted — ZO Skin Health orders are capped at $200.'; notice.style.display = 'block'; }
-  } else if (notice) {
-    notice.style.display = 'none';
-  }
-
-  // Lock/unlock all other ZO inputs
-  for (var i = 0; i < allZOInputs.length; i++) {
-    if (allZOInputs[i] !== changedInput) {
-      if (qty > 0) {
-        allZOInputs[i].value = 0;
-        allZOInputs[i].classList.add('zo-locked');
-      } else {
-        allZOInputs[i].classList.remove('zo-locked');
-      }
-    }
-  }
-  updateSummary();
-}
-
 window.addEventListener('DOMContentLoaded', function() {
   var inputs = document.querySelectorAll('.qty-input');
   for (var i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener('input', updateSummary);
     inputs[i].addEventListener('change', updateSummary);
-  }
-  var zoInputs = document.querySelectorAll('#vendor-section-ZO .qty-input');
-  for (var j = 0; j < zoInputs.length; j++) {
-    zoInputs[j].addEventListener('input', function(e) { enforceZOLimits(e.target); });
-    zoInputs[j].addEventListener('change', function(e) { enforceZOLimits(e.target); });
   }
   applyVendorVisibility();
   updateDeadlineDisplay();
