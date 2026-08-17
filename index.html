@@ -1324,11 +1324,32 @@ function getVendorVisibility() {
     var stored = localStorage.getItem('vendorVisibility');
     if (stored) return JSON.parse(stored);
   } catch(e) {}
-  return { Alastin: true, Plated: true, Epicutis: true, SkinBetter: false, ZO: true };
+  return { Alastin: false, Plated: false, Epicutis: false, SkinBetter: true, ZO: false };
 }
 
 function saveVendorVisibility(vis) {
   localStorage.setItem('vendorVisibility', JSON.stringify(vis));
+  if (APPS_SCRIPT_URL) {
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({ action: 'setConfig', key: 'vendorVisibility', value: JSON.stringify(vis) })
+    }).catch(function() {});
+  }
+}
+
+function syncConfigFromServer() {
+  if (!APPS_SCRIPT_URL) return;
+  fetch(APPS_SCRIPT_URL + '?action=getConfig')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data && data.vendorVisibility) {
+        var parsed = typeof data.vendorVisibility === 'string' ? JSON.parse(data.vendorVisibility) : data.vendorVisibility;
+        localStorage.setItem('vendorVisibility', JSON.stringify(parsed));
+        applyVendorVisibility();
+      }
+    })
+    .catch(function() {});
 }
 
 function applyVendorVisibility() {
@@ -1404,6 +1425,7 @@ window.addEventListener('DOMContentLoaded', function() {
     inputs[i].addEventListener('change', updateSummary);
   }
   applyVendorVisibility();
+  syncConfigFromServer();
   updateDeadlineDisplay();
 });
 </script>
