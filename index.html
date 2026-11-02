@@ -1321,17 +1321,22 @@ function exportVendorXLSX() {
 
 /* ═══════════════ VENDOR VISIBILITY ═══════════════ */
 var VENDORS = ['Alastin', 'Plated', 'Epicutis', 'SkinBetter', 'ZO'];
+var VENDOR_CONFIG_VERSION = '4';
 
 function getVendorVisibility() {
   try {
-    var stored = localStorage.getItem('vendorVisibility');
-    if (stored) return JSON.parse(stored);
+    var storedVersion = localStorage.getItem('vendorConfigVersion');
+    if (storedVersion === VENDOR_CONFIG_VERSION) {
+      var stored = localStorage.getItem('vendorVisibility');
+      if (stored) return JSON.parse(stored);
+    }
   } catch(e) {}
-  return { Alastin: false, Plated: false, Epicutis: false, SkinBetter: true, ZO: false };
+  return { Alastin: true, Plated: true, Epicutis: true, SkinBetter: false, ZO: true };
 }
 
 function saveVendorVisibility(vis) {
   localStorage.setItem('vendorVisibility', JSON.stringify(vis));
+  localStorage.setItem('vendorConfigVersion', VENDOR_CONFIG_VERSION);
   if (APPS_SCRIPT_URL) {
     fetch(APPS_SCRIPT_URL, {
       method: 'POST',
@@ -1393,19 +1398,33 @@ function toggleVendor(vendorName, enabled) {
 }
 
 /* ═══════════════ SUBMIT DEADLINE ═══════════════ */
+var DEADLINE_DEFAULT = '2026-11-11';
+var DEADLINE_VERSION = '4';
+
+function getDeadline() {
+  try {
+    if (localStorage.getItem('deadlineVersion') === DEADLINE_VERSION) {
+      var stored = localStorage.getItem('submitDeadline');
+      if (stored !== null) return stored;
+    }
+  } catch(e) {}
+  return DEADLINE_DEFAULT;
+}
 function saveDeadline(val) {
   if (val) { localStorage.setItem('submitDeadline', val); }
   else { localStorage.removeItem('submitDeadline'); }
+  localStorage.setItem('deadlineVersion', DEADLINE_VERSION);
   updateDeadlineDisplay();
 }
 function clearDeadline() {
   localStorage.removeItem('submitDeadline');
+  localStorage.setItem('deadlineVersion', DEADLINE_VERSION);
   var inp = document.getElementById('adminDeadlineInput');
   if (inp) inp.value = '';
   updateDeadlineDisplay();
 }
 function updateDeadlineDisplay() {
-  var val = localStorage.getItem('submitDeadline');
+  var val = getDeadline();
   var block = document.getElementById('submitDeadline');
   var span = document.getElementById('submitDeadlineDate');
   var inp = document.getElementById('adminDeadlineInput');
